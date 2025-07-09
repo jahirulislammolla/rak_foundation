@@ -46,8 +46,10 @@
                     <img alt="Image" class="w-100 animate-zoom" src="{{ asset('img/backgroud_donate.png') }}" />
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
-                            <h1 class="display-1 text-white mb-md-4 animated zoomIn text-uppercase">Together for a Better Tomorrow</h1>
-                            <a class="btn btn-primary py-md-3 px-md-5 me-3 animated slideIn" href="quote.html">Help Us
+                            <h1 class="display-1 text-white mb-md-4 animated zoomIn text-uppercase">Together f0or a Better Tomorrow</h1>
+                            <a class="btn btn-primary py-md-3 px-md-5 me-3 animated slideIn" href="/donate">Help Us
+                                <i class="fa fa-arrow me-1"></i></a>
+                            <a class="btn btn-danger py-md-3 px-md-5 me-3 animated slideIn" href="/login">Join Us
                                 <i class="fa fa-arrow me-1"></i></a>
 
                         </div>
@@ -88,52 +90,6 @@
     </div>
     <!-- Full Screen Search End -->
     <!-- Facts Start -->
-    {{-- <div class="container-fluid facts py-5 pt-lg-0">
-        <div class="container py-5 pt-lg-0">
-            <div class="row gx-0">
-                <div class="col-lg-4 wow zoomIn" data-wow-delay="0.1s">
-                    <div class="bg-primary shadow d-flex align-items-center justify-content-center p-4"
-                        style="height: 150px;">
-                        <div class="bg-white d-flex align-items-center justify-content-center rounded mb-2"
-                            style="width: 60px; height: 60px;">
-                            <i class="fa fa-users text-primary"></i>
-                        </div>
-                        <div class="ps-4">
-                            <h5 class="text-white mb-0">Our Programs</h5>
-                            <h1 class="text-white mb-0" data-toggle="counter-up">40</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 wow zoomIn" data-wow-delay="0.3s">
-                    <div class="bg-light shadow d-flex align-items-center justify-content-center p-4"
-                        style="height: 150px;">
-                        <div class="bg-primary d-flex align-items-center justify-content-center rounded mb-2"
-                            style="width: 60px; height: 60px;">
-                            <i class="fa fa-check text-white"></i>
-                        </div>
-                        <div class="ps-4">
-                            <h5 class="text-primary mb-0">Projects Done</h5>
-                            <h1 class="mb-0" data-toggle="counter-up">20</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 wow zoomIn" data-wow-delay="0.6s">
-                    <div class="bg-primary shadow d-flex align-items-center justify-content-center p-4"
-                        style="height: 150px;">
-                        <div class="bg-white d-flex align-items-center justify-content-center rounded mb-2"
-                            style="width: 60px; height: 60px;">
-                            <i class="fa fa-award text-primary"></i>
-                        </div>
-                        <div class="ps-4">
-                            <h5 class="text-white mb-0">Hepling Done</h5>
-                            <h1 class="text-white mb-0" data-toggle="counter-up">100</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- Facts Start -->
     <!-- About Start -->
     <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container py-5 px-5">
@@ -166,64 +122,6 @@
             </div>
         </div>
     </div>
-    <!-- About End -->
-    <!-- Features Start -->
-    {{-- <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                <h2 class="fw-bold text-primary text-uppercase"></h2>
-               
-            </div>
-            <div class="row g-5">
-                <div class="col-lg-4">
-                    <div class="row g-5">
-                        <div class="col-12 wow zoomIn" data-wow-delay="0.2s">
-                            <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
-                                style="width: 60px; height: 60px;">
-                                <i class="fa fa-cubes text-white"></i>
-                            </div>
-                            <h4>Education</h4>
-                            <p class="mb-0">Magna sea eos sit dolor, ipsum amet lorem diam dolor eos et diam dolor</p>
-                        </div>
-                        <div class="col-12 wow zoomIn" data-wow-delay="0.6s">
-                            <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
-                                style="width: 60px; height: 60px;">
-                                <i class="fa fa-award text-white"></i>
-                            </div>
-                            <h4>Skill Development</h4>
-                            <p class="mb-0">Magna sea eos sit dolor, ipsum amet lorem diam dolor eos et diam dolor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 wow zoomIn" data-wow-delay="0.9s" style="min-height: 350px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.1s"
-                            src="{{ asset('img/feature.jpg') }}" style="object-fit: cover;" />
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="row g-5">
-                        <div class="col-12 wow zoomIn" data-wow-delay="0.4s">
-                            <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
-                                style="width: 60px; height: 60px;">
-                                <i class="fa fa-users-cog text-white"></i>
-                            </div>
-                            <h4>Environment</h4>
-                            <p class="mb-0">Magna sea eos sit dolor, ipsum amet lorem diam dolor eos et diam dolor</p>
-                        </div>
-                        <div class="col-12 wow zoomIn" data-wow-delay="0.8s">
-                            <div class="bg-primary rounded d-flex align-items-center justify-content-center mb-3"
-                                style="width: 60px; height: 60px;">
-                                <i class="fa fa-phone-alt text-white"></i>
-                            </div>
-                            <h4>Health Support</h4>
-                            <p class="mb-0">Magna sea eos sit dolor, ipsum amet lorem diam dolor eos et diam dolor</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <!-- Features Start -->
     <!-- Service Start -->
     <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
@@ -486,7 +384,7 @@
     <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="section-title text-center position-relative pb-3 mb-4 mx-auto" style="max-width: 600px;">
-                <h2 class="fw-bold text-primary text-uppercase">Memebers</h2>
+                <h2 class="fw-bold text-primary text-uppercase">Our Memebers</h2>
             </div>
             <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.6s">
                 <div class="testimonial-item bg-light my-4">
@@ -494,7 +392,7 @@
                         <img class="img-fluid rounded" src="{{ asset('img/testimonial-1.jpg') }}"
                             style="width: 60px; height: 60px;" />
                         <div class="ps-4">
-                            <h4 class="text-primary mb-1">Client Name</h4>
+                            <h4 class="text-primary mb-1">Member Name</h4>
                             <small class="text-uppercase">Profession</small>
                         </div>
                     </div>
@@ -507,7 +405,7 @@
                         <img class="img-fluid rounded" src="{{ asset('img/testimonial-2.jpg') }}"
                             style="width: 60px; height: 60px;" />
                         <div class="ps-4">
-                            <h4 class="text-primary mb-1">Client Name</h4>
+                            <h4 class="text-primary mb-1">Member Name</h4>
                             <small class="text-uppercase">Profession</small>
                         </div>
                     </div>
@@ -520,7 +418,7 @@
                         <img class="img-fluid rounded" src="{{ asset('img/testimonial-3.jpg') }}"
                             style="width: 60px; height: 60px;" />
                         <div class="ps-4">
-                            <h4 class="text-primary mb-1">Client Name</h4>
+                            <h4 class="text-primary mb-1">Member Name</h4>
                             <small class="text-uppercase">Profession</small>
                         </div>
                     </div>
@@ -533,7 +431,7 @@
                         <img class="img-fluid rounded" src="{{ asset('img/testimonial-4.jpg') }}"
                             style="width: 60px; height: 60px;" />
                         <div class="ps-4">
-                            <h4 class="text-primary mb-1">Client Name</h4>
+                            <h4 class="text-primary mb-1">Member Name</h4>
                             <small class="text-uppercase">Profession</small>
                         </div>
                     </div>
@@ -624,7 +522,7 @@
     <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                <h2 class="fw-bold text-primary text-uppercase">Latest Blogs</h2>
+                <h2 class="fw-bold text-primary text-uppercase">Our Latest Work</h2>
             </div>
             <div class="row g-5">
                 <div class="col-lg-4 wow slideInUp" data-wow-delay="0.3s">

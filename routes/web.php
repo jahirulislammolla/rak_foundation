@@ -68,8 +68,40 @@ Route::get('/', function () {
 });
 
 
+Route::get('/about', function () {
+    return view('about');
+});
+
 Route::get('/contact', function () {
     return view('contact');
+});
+
+Route::get('/membership', function () {
+    return view('membership');
+});
+
+Route::get('/event', function () {
+    return view('event');
+});
+
+Route::get('/gallery', function () {
+    return view('gallery');
+});
+
+Route::get('/our-work', function () {
+    return view('our_work');
+});
+
+Route::get('/donate', function () {
+    return view('donate');
+});
+
+Route::get('/event-registration', function () {
+    return view('event_registration');
+});
+
+Route::get('/committee', function () {
+    return view('committee');
 });
 
 

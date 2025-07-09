@@ -18,15 +18,46 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="" class="nav-item nav-link active">Home</a>
+                    <a href="/" class="nav-item nav-link active">Home</a>
                     <a href="/about" class="nav-item nav-link">About</a>
-                    <a href="/programs" class="nav-item nav-link">Programs</a>
-                    <a href="/blog" class="nav-link nav-item" >Blog</a>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    <a href="/event" class="nav-item nav-link">Event</a>
+                    <div class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Resources</a>
+                      <div class="dropdown-menu m-0">
+                          <a class="dropdown-item" href="/gallery">Gallery</a>
+                          <a class="dropdown-item" href="/our-work">Our Work</a>
+                          <a class="dropdown-item" href="/committee">Our Committee</a>
+                      </div>
+                  </div>
+                    <a href="/membership" class="nav-link nav-item">Membership</a>
+                    <a href="contact" class="nav-item nav-link">Contact</a>
                 </div>
                 <butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
-                <a href="https://htmlcodex.com/startup-company-website-template" class="btn btn-primary py-2 px-4 ms-3">DONATE</a>
+                <a href="/donate" class="btn btn-primary py-2 px-4 ms-3">DONATE</a>
             </div>
         </nav>
     </div>
     <!-- Navbar & Carousel End -->
+    <!-- Add this script before the closing </body> tag or in a JS file -->
+<script>
+  // Wait until DOM is ready
+  document.addEventListener("DOMContentLoaded", function () {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+
+    navLinks.forEach((link) => {
+      // Remove any previously active
+      link.classList.remove("active");
+
+      // Match by pathname
+      if (link.getAttribute("href") === currentPath) {
+        link.classList.add("active");
+      }
+
+      // Optional: add special case for homepage
+      if ((currentPath === "/" || currentPath === "") && link.getAttribute("href") === "") {
+        link.classList.add("active");
+      }
+    });
+  });
+</script>
