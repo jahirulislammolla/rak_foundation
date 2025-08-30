@@ -1,9 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\CommitteeController;
+use App\Http\Controllers\Admin\FocusAreaController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PersonController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WorkCategoryController;
+use App\Http\Controllers\Admin\WorkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Menu;
@@ -35,10 +41,21 @@ Route::group(['middleware' => ['auth']], function() {
     Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole']);
 
     Route::resource('users', UserController::class);
+    Route::resource('focus-area', FocusAreaController::class);
+    Route::resource('committees', CommitteeController::class);
+    Route::resource('people', PersonController::class);
+    Route::resource('works', WorkController::class);
+     Route::resource('work-categories', WorkCategoryController::class);
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
     Route::resource('menus', 'Admin\MenuController');
     Route::get('/manage-messages', [MessageController::class, 'index'])->name('message.index');
     Route::delete('/manage-messages-delete/{id}', [MessageController::class, 'delete'])->name('message.delete');
+    Route::get('/image-settings', [SettingController::class, 'image_get_setting'])->name('image_settings');
+    Route::post('/store-settings', [SettingController::class, 'image_store_setting'])->name('image_store_settings');
+    Route::get('/social-link-settings', [SettingController::class, 'get_social_link_setting'])->name('social_link_settings');
+    Route::post('/store-social-link-settings', [SettingController::class, 'store_social_link_settings'])->name('store_social_link_settings');
+    Route::get('/contact-settings', [SettingController::class, 'get_contact_setting'])->name('contact_settings');
+    Route::post('/store-contact-settings', [SettingController::class, 'store_contact_settings'])->name('store_contact_settings');
 
 });
 
@@ -104,6 +121,8 @@ Route::get('/committee', function () {
     return view('committee');
 });
 
+Route::get('/foucs-area/{slug}', [FocusAreaController::class, 'show']);
+Route::get('/our-works/{slug}', [WorkController::class, 'show'])->name('works.show');
 
 Route::get('/profile', function () {
     $profiles = Profile::query()

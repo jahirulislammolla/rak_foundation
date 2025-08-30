@@ -25,9 +25,12 @@
         [x-cloak] {
             display: none;
         }
+
         .ck-editor__editable {
-            min-height: 150px; /* Minimum height for the editor */
+            min-height: 150px;
+            /* Minimum height for the editor */
         }
+
     </style>
 </head>
 
@@ -39,7 +42,8 @@
                     <img class="w-full h-full mt-px rounded-lg" src="{{ asset('assets/images/logo/saif.png') }}" alt="logo">
                 </a>
                 <input id="navigationSearch" class="px-3 py-1 rounded-md focus:outline-none border shadow grow" type="text" placeholder="Search..." autocomplete="off">
-                <div @click="navigationTrigger = !navigationTrigger" class="lg:hidden w-8 border rounded text-center text-xl cursor-pointer bg-white text-sky-600">&#9776;
+                <div @click="navigationTrigger = !navigationTrigger" class="lg:hidden w-8 border rounded text-center text-xl cursor-pointer bg-white text-sky-600">
+                    &#9776;
                 </div>
             </div>
             <ul class="grow bg-white overflow-y-auto px-2 print:hidden border-r" id="navigationMenu">
@@ -113,64 +117,35 @@
                         </li>
                     </ul>
                 </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-publications') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-book w-5 text-center"></i>
-                        <span class="grow menu__title">Publications List</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-profiles') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-user w-5 text-center"></i>
-                        <span class="grow menu__title">Profile List</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-awards') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-trophy w-5 text-center"></i>
-                        <span class="grow menu__title">Award List</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-educations') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-graduation-cap w-5 text-center"></i>
-                        <span class="grow menu__title">Education List</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-leaderships') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-users w-5 text-center"></i>
-                        <span class="grow menu__title">Leadership List</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-mentorships') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-hands-helping w-5 text-center"></i>
-                        <span class="grow menu__title">Mentorship List</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-outreachs') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-bullhorn w-5 text-center"></i>
-                        <span class="grow menu__title">Outreach List</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-teachings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-chalkboard-teacher w-5 text-center"></i>
-                        <span class="grow menu__title">Teaching List</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ url('manage-professional-services') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-briefcase w-5 text-center"></i>
-                        <span class="grow menu__title">Professional Affiliation List</span>
-                    </a>
-                </li>                
+
                 <li class="pl-2 font-semibold">
                     <a href="{{ url('manage-messages') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                         <i class="w-5 text-center fas fa-envelope"></i>
                         <span class="grow menu__title">Message List</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('social_link_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span class="grow menu__title">Social Link Setting</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('url_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span class="grow menu__title">Reseach Link Setting</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span class="grow menu__title">Image Setting</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('contact_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span class="grow menu__title">Basic & Contact Setting</span>
                     </a>
                 </li>
                 @endrole
@@ -189,9 +164,10 @@
                     <ul class="hidden pl-2 py-1 __child__container__{{ $menu->id }}">
                         @foreach ($menu->submenu as $submenu)
                         @can($submenu->permission)
-                        @if(Request::is($submenu->url . '*'))
+                        @if (Request::is($submenu->url . '*'))
                         <script>
                             document.querySelector('.__child__container__{{ $menu->id }}').classList.remove('hidden')
+
                         </script>
                         @endif
                         @endcan
@@ -220,7 +196,8 @@
         <div class="shrink grow print:overflow-visible">
             <header class="w-full z-30 px-4shadow h-14 flex items-center bg-sky-600 px-2 lg:px-3 print:hidden sticky top-0">
                 <div class="w-full flex justify-between">
-                    <div @click="navigationTrigger = !navigationTrigger" x-bind:class="navigationTrigger ? '' : 'lg:-ml-2'" class="w-8 border rounded text-center text-xl cursor-pointer z-40 bg-white text-sky-600">&#9776;
+                    <div @click="navigationTrigger = !navigationTrigger" x-bind:class="navigationTrigger ? '' : 'lg:-ml-2'" class="w-8 border rounded text-center text-xl cursor-pointer z-40 bg-white text-sky-600">
+                        &#9776;
                     </div>
 
 
@@ -266,7 +243,7 @@
                     </ul>
                 </div>
                 @endif
-                @if(Session::has('message'))
+                @if (Session::has('message'))
                 <div class="px-3 py-2 rounded bg-cyan-100 text-cyan-600 mb-4">
                     {{ Session::get('message') }}
                 </div>
@@ -277,7 +254,6 @@
     </div>
 
     <script>
-
         function submenuToggle(parrent) {
             let wrapper = parrent.nextElementSibling;
 
@@ -302,6 +278,7 @@
 
             searchItem("#navigationMenu ul", 1);
         });
+
     </script>
 
     @yield('footer')

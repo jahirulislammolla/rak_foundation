@@ -1,34 +1,67 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title> Dr. Md Saifuzzaman</title>
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet" type="text/css" />
-        <link rel="shortcut icon" href="{{ asset('assets/images/background/icon.ico') }}" type="image/x-icon">
-        <!-- Scripts -->
-        <link href="{{ asset('assets/css/app_update.css') }}" rel="stylesheet">
-        <style>
-            .div_background{
-                background: rgb(34,193,195);
-                background: linear-gradient(40deg, rgba(236, 114, 61, 0.943) 13%, rgba(37, 73, 110, 0.915) 91%);
-            }
-        </style>
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        @include('components.header')
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-white div_background">
-            <div>
-                <a href="/">
-                    <img class="w-28 sm:w-32 lg:w-32 text-center" src="{{ asset('assets/images/logo/logo_2.png') }}" alt="logo">
-                </a>
-            </div>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>RAK Foundation</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4  bg-sky-800/20 shadow-lg overflow-hidden sm:rounded-lg">
-                {{ $slot }}
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body style='font-family: "Helvetica Neue", Arial, sans-serif;'>
+    @include('components.header')
+    {{-- =============================================== --}}
+    {{ $slot }}
+ 
+    <div class="container-fluid text-white fixed-bottom" style="background: #061429;">
+        <div class="container text-center">
+            <div class="row justify-content-end">
+                <div class="d-flex align-items-center justify-content-center" style="height: 75px;">
+                    <p class="mb-0">&copy; <a class="text-white border-bottom" href="#">RAK Foundation</a>. All Rights Reserved.</p>
+                </div>
             </div>
         </div>
-    </body>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    
+</body>
 </html>
