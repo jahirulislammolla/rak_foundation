@@ -62,8 +62,8 @@
             margin-top: 60px;
             margin-bottom: 20px;
         }
-        
-        .section_color{
+
+        .section_color {
             background-color: #e9efff9e !important;
         }
 
@@ -71,18 +71,15 @@
 		background-color: rgba(0, 149, 255, 0.389) !important;
 		background: linear-gradient(rgba(9, 30, 62, .7), rgba(9, 30, 62, .7)), url('{{ asset('img/aboutus.png') }}') center center no-repeat;
 	} */
+
     </style>
-    {{-- <div
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
-        id="spinner">
-        <div class="spinner"></div>
-    </div> --}}
+
     <!-- Spinner End -->
     <div class="container-fluid position-relative p-0">
         <div class="carousel" data-bs-ride="carousel" id="header-carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img alt="Image" class="w-100 animate-zoom" height="420px" src="{{ asset('img/donationus.png') }}" />
+                    <img alt="Image" class="w-100 animate-zoom" height="420px" src="{{ asset( $settings['donation_image'] ?? '') }}" />
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             <h2 class="display-5 text-white animated zoomIn">Support RAK Foundation</h2>
@@ -96,92 +93,124 @@
 
     <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container my-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 donation-box">
+            @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
 
-                    <h4 class="mb-4">Choose Donation Amount</h4>
-                    <div class="d-flex flex-wrap gap-2 mb-3">
-                        <button class="btn btn-outline-primary amount-btn bg-hover-primary">৳100</button>
-                        <button class="btn btn-outline-primary amount-btn bg-hover-primary">৳500</button>
-                        <button class="btn btn-outline-primary amount-btn bg-hover-primary">৳1000</button>
-                        <button class="btn btn-outline-primary amount-btn bg-hover-primary">৳5000</button>
-                    </div>
-                    <input type="number" class="form-control mb-4" placeholder="Or enter custom amount">
+            <form method="POST" action="{{ route('donate.store') }}">
+                @csrf
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 donation-box">
 
-                    <h5>Choose a Cause</h5>
-                    <select class="form-select mb-4">
-                        <option selected disabled>Select Cause</option>
-                        <option>Zakat</option>
-                        <option>Education Support</option>
-                        <option>Medical Fund</option>
-                        <option>Orphan Care</option>
-                        <option>General Donation</option>
-                    </select>
-
-                    <h5>Your Information</h5>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <input type="text" class="form-control" placeholder="Full Name">
+                        <h4 class="mb-4">Choose Donation Amount</h4>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            @foreach([100,500,1000,5000] as $preset)
+                            <button type="button" class="btn btn-outline-primary amount-btn bg-hover-primary" data-amount="{{ $preset }}">৳{{ $preset }}</button>
+                            @endforeach
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <input type="email" class="form-control" placeholder="Email Address">
+                        <input type="number" class="form-control mb-4 @error('amount') is-invalid @enderror" name="amount" id="amountInput" placeholder="Or enter custom amount" value="{{ old('amount') }}">
+                        @error('amount') <div class="invalid-feedback">{{ $message }}</div> @enderror
+
+                        <h5>Choose a Cause</h5>
+                        <select class="form-select mb-4 @error('donation_cause_id') is-invalid @enderror" name="donation_cause_id">
+                            <option selected disabled>Select Cause</option>
+                            @foreach($causes as $cause)
+                            <option value="{{ $cause->id }}" @selected(old('donation_cause_id')==$cause->id)>{{ $cause->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('donation_cause_id') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+
+                        <h5>Your Information</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control @error('full_name') is-invalid @enderror" name="full_name" placeholder="Full Name" value="{{ old('full_name') }}">
+                                @error('full_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Email Address" value="{{ old('email') }}">
+                                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+                        <input type="text" class="form-control mb-3 @error('phone') is-invalid @enderror" name="phone" placeholder="Phone Number" value="{{ old('phone') }}">
+                        @error('phone') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+
+                        <textarea class="form-control mb-3" rows="2" name="address" placeholder="Address (optional)">{{ old('address') }}</textarea>
+                        <textarea class="form-control mb-3" rows="2" name="note" placeholder="Note (optional)">{{ old('note') }}</textarea>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="anon" name="is_anonymous" value="1" @checked(old('is_anonymous'))>
+                            <label class="form-check-label" for="anon">Donate anonymously</label>
+                        </div>
+
+                        <h5>Select Payment Method</h5>
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            @foreach([ 'bkash'=>'bKash','nagad'=>'Nagad','card'=>'Card','bank'=>'Bank Transfer' ] as $key=>$label)
+                            <label class="btn btn-outline-dark">
+                                <input type="radio" class="me-2" name="payment_method" value="{{ $key }}" @checked(old('payment_method')===$key)> {{ $label }}
+                            </label>
+                            @endforeach
+                        </div>
+                        @error('payment_method') <div class="text-danger mb-3">{{ $message }}</div> @enderror
+
+                        {{-- Summary (client side preview) --}}
+                        <div class="donate-summary mb-4" id="summaryBox" hidden>
+                            <strong>Summary:</strong><br>
+                            <span id="sumAmount">Amount: ৳0</span><br>
+                            <span id="sumCause">Cause: -</span><br>
+                            <span id="sumMethod">Payment Method: -</span>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-success py-2 px-4 fs-5" style="background-color: #18b90f; border-radius: 4px; border:1px solid #f8f9fa;">Donate Now</button>
                         </div>
                     </div>
-                    <input type="text" class="form-control mb-3" placeholder="Phone Number">
-                    <textarea class="form-control mb-3" rows="2" placeholder="Address (optional)"></textarea>
-                    <div class="form-check mb-4">
-                        <input class="form-check-input" type="checkbox" id="anon">
-                        <label class="form-check-label" for="anon">Donate anonymously</label>
-                    </div>
+                </div>
+            </form>
 
-                    <h5>Select Payment Method</h5>
-                    <div class="d-flex flex-wrap gap-2 mb-4">
-                        <button class="btn btn-outline-dark">bKash</button>
-                        <button class="btn btn-outline-dark">Nagad</button>
-                        <button class="btn btn-outline-dark">Card</button>
-                        <button class="btn btn-outline-dark">Bank Transfer</button>
-                    </div>
-
-                    <div class="donate-summary mb-4">
-                        <strong>Summary:</strong><br>
-                        Amount: ৳1000<br>
-                        Cause: Medical Fund<br>
-                        Payment Method: bKash
-                    </div>
-                    <div class="text-center">
-                        <button class="btn btn-success py-2 px-4 fs-5" style="background-color: #18b90f; border-radius: 4px; border:1px solid #f8f9fa;">Donate Now</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Why Donate Section -->
-        <div class="container text-center">
-            <h3 class="section-title-donation">Why Donate to RAK Foundation?</h3>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="p-4 bg-white shadow-sm rounded section_color">
-                        <h5>📚 Education Programs</h5>
-                        <p>We support students with scholarships, books and schools.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-4 bg-white shadow-sm rounded section_color">
-                        <h5>🏥 Medical Aid</h5>
-                        <p>Help patients with life-saving treatments and medicine.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-4 bg-white shadow-sm rounded section_color">
-                        <h5>🧒 Orphan Care</h5>
-                        <p>We take care of orphans with food, shelter and love.</p>
-                    </div>
-                </div>
-            </div>
+            {{-- Why donate section: তোমার আগের ব্লকই থাকুক --}}
         </div>
     </div>
-    <!-- About End -->
-    <!-- Team End -->
-    <!-- Vendor End -->
-    <!-- Footer Start -->
+
+    {{-- Tiny JS for quick-amount + summary --}}
+    <script>
+(() => {
+  const amountInput = document.getElementById('amountInput');
+  document.querySelectorAll('[data-amount]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      amountInput.value = btn.dataset.amount;
+      updateSummary();
+    });
+  });
+
+  const causeSelect = document.querySelector('select[name="donation_cause_id"]');
+  const methodRadios = document.querySelectorAll('input[name="payment_method"]');
+  const summaryBox = document.getElementById('summaryBox');
+  const sumAmount = document.getElementById('sumAmount');
+  const sumCause = document.getElementById('sumCause');
+  const sumMethod = document.getElementById('sumMethod');
+
+  // লেবেল ম্যাপ (আরও নির্ভরযোগ্য)
+  const methodLabels = { bkash: 'bKash', nagad: 'Nagad', card: 'Card', bank: 'Bank Transfer' };
+
+  function updateSummary() {
+    const amt = parseFloat(amountInput?.value ?? 0) || 0;
+
+    const selectedOption = causeSelect?.selectedOptions?.[0];
+    const causeText = selectedOption?.text ?? '-';
+
+    const methodCode = document.querySelector('input[name="payment_method"]:checked')?.value;
+    const method = methodCode ? (methodLabels[methodCode] ?? methodCode) : '-';
+
+    sumAmount.textContent = `Amount: ৳${amt}`;
+    sumCause.textContent = `Cause: ${causeText}`;
+    sumMethod.textContent = `Payment Method: ${method}`;
+    summaryBox.hidden = false;
+  }
+
+  amountInput?.addEventListener('input', updateSummary);
+  causeSelect?.addEventListener('change', updateSummary);
+  methodRadios.forEach(r => r.addEventListener('change', updateSummary));
+})();
+</script>
+
 </x-app-layout>

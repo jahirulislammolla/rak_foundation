@@ -21,6 +21,10 @@
                     <label class="block text-gray-700 font-semibold">Contact Address</label>
                     <input type="text" name="contact_address" value="{{ $settings['contact_address'] ?? '' }}" class="w-full p-2 border border-gray-300 rounded-lg mt-1" />
                 </div>
+                <div class="space-y-2">
+                    <label class="block text-gray-700 font-semibold">Contact Location Link</label>
+                    <input type="text" name="contact_location" value="{{ $settings['contact_location'] ?? '' }}" class="w-full p-2 border border-gray-300 rounded-lg mt-1" />
+                </div>
             </div>
 
             <div class="flex items-center gap-4 pt-6">

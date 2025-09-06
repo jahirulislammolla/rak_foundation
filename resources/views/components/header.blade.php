@@ -10,7 +10,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
             <a href="/" class="navbar-brand p-0">
                 <h1 class="m-0">
-                    <img src="img/logo_top.png" alt="Logo" style="width: 120px; height: auto; margin-right: 10px;">
+                    <img src="{{ asset($settings['logo_image']) ?? '' }}" alt="Logo" style="width: 120px; height: auto; margin-right: 10px;">
                 </h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -20,13 +20,15 @@
                 <div class="navbar-nav ms-auto py-0">
                     <a href="/" class="nav-item nav-link active">Home</a>
                     <a href="/about" class="nav-item nav-link">About</a>
-                    <a href="/event" class="nav-item nav-link">Event</a>
+                    <a href="/events" class="nav-item nav-link">Event</a>
+                    <a href="/galleries" class="nav-item nav-link">Gallery</a>
                     <div class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Resources</a>
                       <div class="dropdown-menu m-0">
-                          <a class="dropdown-item" href="/gallery">Gallery</a>
+                          <a class="dropdown-item" href="/focus-areas">Our Focus Area</a>
                           <a class="dropdown-item" href="/our-work">Our Work</a>
-                          <a class="dropdown-item" href="/committee">Our Committee</a>
+                          <a class="dropdown-item" href="/committees">Our Committee</a>
+                          <a class="dropdown-item" href="/members">Our Member</a>
                       </div>
                   </div>
                     <a href="/membership" class="nav-link nav-item">Membership</a>

@@ -9,10 +9,7 @@ class Work extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = [
-        'work_category_id','title','slug','author_name','image',
-        'excerpt','body','published_at','priority','is_active'
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'published_at' => 'datetime',
@@ -30,4 +27,5 @@ class Work extends Model
                  ->whereNotNull('published_at')
                  ->where('published_at','<=', now());
     }
+    
 }

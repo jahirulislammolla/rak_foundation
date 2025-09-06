@@ -39,7 +39,7 @@
         <nav x-bind:class="navigationTrigger ? 'flex lg:hidden' : 'hidden lg:flex'" class="shrink-0 bg-gray-50 flex-col w-full lg:w-auto">
             <div class="shrink-0 sticky top-0 grow-0 bg-sky-600 z-30 px-2 h-14 flex items-center gap-2 lg:px-3 print:hidden">
                 <a href="/" class="w-10 h-10 bg-white rounded-full p-1">
-                    <img class="w-full h-full mt-px rounded-lg" src="{{ asset('assets/images/logo/saif.png') }}" alt="logo">
+                    <img class="w-full h-full mt-px rounded-lg" src="{{ asset($settings['logo_image']) ?? '' }}" alt="logo">
                 </a>
                 <input id="navigationSearch" class="px-3 py-1 rounded-md focus:outline-none border shadow grow" type="text" placeholder="Search..." autocomplete="off">
                 <div @click="navigationTrigger = !navigationTrigger" class="lg:hidden w-8 border rounded text-center text-xl cursor-pointer bg-white text-sky-600">
@@ -119,6 +119,69 @@
                 </li>
 
                 <li class="pl-2 font-semibold">
+                    <a href="{{ route('manage-donations.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="icon-heart w-5 text-center text-danger"></i>
+                        <span class="grow menu__title">Donation</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('manage-galleries.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-image w-5 text-center"></i>
+                        <span class="grow menu__title">Gallery</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('manage-events.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="icon-event w-5 text-center"></i>
+                        <span class="grow menu__title">Events</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('manage-event-registrations.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-plus w-5 text-center"></i>
+                        <span class="grow menu__title">Event Registration</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('manage-committees.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-book w-5 text-center"></i>
+                        <span class="grow menu__title">Committee</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('manage-members.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="icon-diamond w-5 text-center"></i>
+                        <span class="grow menu__title">Members</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                     <a href="{{ route('manage-focus-area.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-sun w-5 text-center"></i>
+                        <span class="grow menu__title">Focus Area List</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('manage-work-categories.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="icon-folder-alt w-5 text-center"></i>
+                        <span class="grow menu__title">Work Category</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('manage-works.index') }}"
+                        class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-list w-5 text-center"></i>
+                        <span class="grow menu__title">Our Works</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
                     <a href="{{ url('manage-messages') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                         <i class="w-5 text-center fas fa-envelope"></i>
                         <span class="grow menu__title">Message List</span>
@@ -131,13 +194,7 @@
                     </a>
                 </li>
                 <li class="pl-2 font-semibold">
-                    <a href="{{ route('url_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                        <i class="fas fa-cog w-5 text-center"></i>
-                        <span class="grow menu__title">Reseach Link Setting</span>
-                    </a>
-                </li>
-                <li class="pl-2 font-semibold">
-                    <a href="{{ route('settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <a href="{{ route('image_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                         <i class="fas fa-cog w-5 text-center"></i>
                         <span class="grow menu__title">Image Setting</span>
                     </a>
@@ -145,7 +202,13 @@
                 <li class="pl-2 font-semibold">
                     <a href="{{ route('contact_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                         <i class="fas fa-cog w-5 text-center"></i>
-                        <span class="grow menu__title">Basic & Contact Setting</span>
+                        <span class="grow menu__title">Contact Setting</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('basic_info_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span class="grow menu__title">Basic Info Setting</span>
                     </a>
                 </li>
                 @endrole

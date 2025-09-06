@@ -10,7 +10,7 @@ class Committee extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name','designation','short_description','photo','priority'
+        'name','designation','short_description','photo','priority', 'contact'
     ];
 
     protected $casts = [

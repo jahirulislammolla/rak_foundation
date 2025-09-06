@@ -46,14 +46,14 @@
                                 <button
                                     class="mr-2 rounded bg-amber-500 px-3 py-1.5 text-white hover:bg-amber-600"
                                     data-edit
-                                    data-update-url="{{ route('admin.people.update', $p) }}"
+                                    data-update-url="{{ route('manage-people.update', $p) }}"
                                     data-name='@json($p->name)'
                                     data-type="{{ $p->type }}"
                                     data-priority="{{ $p->priority }}"
                                     data-photo-url="{{ $p->photo ? asset('storage/'.$p->photo) : '' }}"
                                 >Edit</button>
 
-                                <form class="inline" action="{{ route('admin.people.destroy', $p) }}" method="POST"
+                                <form class="inline" action="{{ route('manage-people.destroy', $p) }}" method="POST"
                                       onsubmit="return confirm('Delete this person?')">
                                     @csrf @method('DELETE')
                                     <button class="rounded bg-red-600 px-3 py-1.5 text-white hover:bg-red-700">Delete</button>
@@ -75,7 +75,7 @@
                 <button class="text-gray-500" onclick="closeCreate()">✕</button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="{{ route('admin.people.store') }}">
+            <form method="POST" enctype="multipart/form-data" action="{{ route('manage-people.store') }}">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>

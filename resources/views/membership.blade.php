@@ -75,19 +75,16 @@
                     <div class="section-title position-relative pb-3 mb-5">
                         <h2 class="fw-bold text-primary text-uppercase">Become a RAK Member</h5>
                     </div>
-                    <p class="mb-4" style="font-size: 20px;">RAK Foundation is a non-profit organization dedicated to
-                        uplifting underprivileged communities through impactful initiatives in education, healthcare,
-                        and charitable outreach. Our mission is to empower lives by providing access to quality
-                        learning, essential health services, and emergency relief for those in need.</p>
-                    <ul style="margin-left: 6px; ">
-                        <li>Exclusive access to events &amp; workshops</li>
-                        <li>Recognition &amp; certificate from RAK Foundation</li>
-                        <li>Join our nationwide professional network</li>
-                        <li>Participate in national program</li>
-                    </ul>
+                    <div class="mb-4" style="font-size: 20px;">
 
-                    <a class="btn btn-primary py-3 px-4 mt-3 zoomIn" data-wow-delay="0.9s" href="/member-application"
-                        style="background-color: rgba(255, 68, 0, 0.899); border-radius: 5px;">Apply for Membership</a>
+                        {!! $settings['membership_section_description'] ?? '' !!}
+                    </div>
+
+                    <a class="btn btn-primary py-3 px-4 mt-3 zoomIn"
+                        href="{{ route('member.apply') }}"
+                        style="background-color: rgba(255, 68, 0, 0.899); border-radius: 5px;">
+                        Apply for Membership
+                    </a>
                 </div>
                 <div class="col-lg-5" style="min-height: 500px;">
                     <div class="position-relative h-100">

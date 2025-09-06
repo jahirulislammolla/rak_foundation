@@ -98,6 +98,91 @@
 
         <li class="font-semibold">
             <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('manage-donations.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="icon-heart w-5 text-center"></i>
+                    <span class="grow menu__title">Donation</span>
+                </a>
+            </div>
+        </li>
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('manage-galleries.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="fas fa-image w-5 text-center"></i>
+                    <span class="grow menu__title">Gallery</span>
+                </a>
+            </div>
+        </li>
+
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('manage-events.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="icon-event w-5 text-center"></i>
+                    <span class="grow menu__title">Events</span>
+                </a>
+            </div>
+        </li>
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+               <a href="{{ route('manage-event-registrations.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="fas fa-plus w-5 text-center"></i>
+                    <span class="grow menu__title">Event Registration</span>
+                </a>
+            </div>
+        </li>
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('manage-committees.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="fas fa-book w-5 text-center"></i>
+                    <span class="grow menu__title">Committee</span>
+                </a>
+            </div>
+        </li>
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('manage-members.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="icon-diamond w-5 text-center"></i>
+                    <span class="grow menu__title">Members</span>
+                </a>
+            </div>
+        </li>
+
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('manage-focus-area.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="fas fa-sun w-5 text-center"></i>
+                    <span class="grow menu__title">Focus Area List</span>
+                </a>
+            </div>
+        </li>
+
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('manage-work-categories.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="icon-folder-alt w-5 text-center"></i>
+                    <span class="grow menu__title">Work Category</span>
+                </a>
+            </div>
+        </li>
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('manage-works.index') }}"
+                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="fas fa-list w-5 text-center"></i>
+                    <span class="grow menu__title">Our Works</span>
+                </a>
+            </div>
+        </li>
+
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
                 <a href="{{ route('social_link_settings') }}"
                     class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                     <i class="fas fa-cog w-5 text-center"></i>
@@ -107,16 +192,7 @@
         </li>
         <li class="font-semibold">
             <div class="p-3 border border-dashed bg-sky-300">
-                <a href="{{ route('url_settings') }}"
-                    class="h-8 flex items-center justify-between gap-2 cursor-pointer">
-                    <i class="fas fa-cog w-5 text-center"></i>
-                    <span class="grow menu__title">Reseach Link Setting</span>
-                </a>
-            </div>
-        </li>
-        <li class="font-semibold">
-            <div class="p-3 border border-dashed bg-sky-300">
-                <a href="{{ route('settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                <a href="{{ route('image_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                     <i class="fas fa-cog w-5 text-center"></i>
                     <span class="grow menu__title">Image Setting</span>
                 </a>
@@ -127,7 +203,15 @@
                 <a href="{{ route('contact_settings') }}"
                     class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                     <i class="fas fa-cog w-5 text-center"></i>
-                    <span class="grow menu__title">Basic & Contact Setting</span>
+                    <span class="grow menu__title">Contact Setting</span>
+                </a>
+            </div>
+        </li>
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('basic_info_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span class="grow menu__title">Basic Info Setting</span>
                 </a>
             </div>
         </li>

@@ -34,16 +34,6 @@
     @include('components.header')
     {{-- =============================================== --}}
     {{ $slot }}
- 
-    <div class="container-fluid text-white fixed-bottom" style="background: #061429;">
-        <div class="container text-center">
-            <div class="row justify-content-end">
-                <div class="d-flex align-items-center justify-content-center" style="height: 75px;">
-                    <p class="mb-0">&copy; <a class="text-white border-bottom" href="#">RAK Foundation</a>. All Rights Reserved.</p>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Footer End -->
 
 

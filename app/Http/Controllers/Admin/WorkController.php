@@ -6,99 +6,136 @@ use App\Http\Controllers\Controller;
 use App\Models\Work;
 use App\Models\WorkCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class WorkController extends Controller
 {
-    /* --------- PUBLIC --------- */
-    public function publicIndex(Request $request)
-    {
-        $cat = WorkCategory::where('slug', $request->get('category'))
-                ->where('is_active', true)->first();
-
-        $works = Work::with('category')
-            ->publishedActive()
-            ->when($cat, fn($q)=>$q->where('work_category_id', $cat->id))
-            ->orderBy('priority')->orderByDesc('published_at')
-            ->paginate(9)->appends($request->only('category'));
-
-        $categories = WorkCategory::where('is_active',true)->orderBy('priority')->get(['id','name','slug']);
-        return view('works.index', compact('works','categories','cat'));
-    }
-
-    public function show($slug)
-    {
-        $work = Work::with('category')->publishedActive()->where('slug',$slug)->firstOrFail();
-        return view('works.show', compact('work'));
-    }
-
-    /* --------- ADMIN --------- */
     public function index()
     {
-        $works = Work::with('category')->orderBy('priority')->orderByDesc('published_at')->paginate(20);
-        $categories = WorkCategory::orderBy('priority')->get(['id','name']);
-        return view('admin.works.index', compact('works','categories'));
+        $works = Work::query()
+            ->with('category:id,name')
+            ->orderByDesc('id')
+            ->paginate(20);
+
+        return view('admin.works.index', compact('works'));
+    }
+
+    public function create()
+    {
+        $categories = WorkCategory::query()->orderBy('name')->get(['id','name']);
+        $work = new Work(); // for form defaults
+        return view('admin.works.create', compact('categories', 'work'));
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title'            => ['required','string','max:190'],
-            'slug'             => ['nullable','string','max:190','unique:works,slug'],
-            'work_category_id' => ['nullable','exists:work_categories,id'],
-            'author_name'      => ['nullable','string','max:190'],
-            'excerpt'          => ['nullable','string','max:300'],
-            'body'             => ['nullable','string'],
-            'image'            => ['nullable','image','mimes:jpg,jpeg,png,webp','max:4096'],
-            'published_at'     => ['nullable','date'],
-            'priority'         => ['nullable','integer','min:0'],
-            'is_active'        => ['nullable','boolean'],
-        ]);
+        $data = $this->validated($request);
 
-        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
-        if (Work::where('slug',$data['slug'])->exists()) $data['slug'] .= '-'.Str::random(4);
-
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('works','public');
+        if (!$data['slug']) {
+            $data['slug'] = Str::slug($data['title']);
+        } else {
+            $data['slug'] = Str::slug($data['slug']);
         }
-        $data['is_active'] = $request->boolean('is_active', true);
-        $data['priority']  = $data['priority'] ?? 0;
 
-        Work::create($data);
-        return back()->with('success','Work created.');
+                // image store
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+                        // Get file name with extension
+            $fileNameWithExt = $file->getClientOriginalName();
+            
+            // Get just the file name
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            
+            // Get the file extension
+            $extension = $file->getClientOriginalExtension();
+            
+            // Create a unique file name
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            
+            // $path = $file->storeAs('public/publications', $fileNameToStore);
+            $file->move(base_path('public/work'), $fileNameToStore);
+
+            $data['image'] = 'work/' . $fileNameToStore;
+        }
+
+        $data['is_active'] = (bool) ($data['is_active'] ?? false);
+
+        $work = Work::create($data);
+
+       return redirect()->route('manage-works.edit', $work->id)->with('success', 'Work created.');
     }
 
-    public function update(Request $request, Work $work)
+    public function edit(Request $request, $id)
     {
-        $data = $request->validate([
-            'title'            => ['required','string','max:190'],
-            'slug'             => ['nullable','string','max:190','unique:works,slug,'.$work->id],
-            'work_category_id' => ['nullable','exists:work_categories,id'],
-            'author_name'      => ['nullable','string','max:190'],
-            'excerpt'          => ['nullable','string','max:300'],
-            'body'             => ['nullable','string'],
-            'image'            => ['nullable','image','mimes:jpg,jpeg,png,webp','max:4096'],
-            'published_at'     => ['nullable','date'],
-            'priority'         => ['nullable','integer','min:0'],
-            'is_active'        => ['nullable','boolean'],
-        ]);
+        $work = Work::find($id);
+
+        $categories = WorkCategory::query()->orderBy('name')->get(['id','name']);
+        return view('admin.works.edit', compact('work', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $work = Work::find($id);
+
+        $data = $this->validated($request, $work->id);
+
+        if (!$data['slug']) {
+            $data['slug'] = Str::slug($data['title']);
+        } else {
+            $data['slug'] = Str::slug($data['slug']);
+        }
 
         if ($request->hasFile('image')) {
-            if ($work->image) Storage::disk('public')->delete($work->image);
-            $data['image'] = $request->file('image')->store('works','public');
+            $file = $request->file('image');
+                        // Get file name with extension
+            $fileNameWithExt = $file->getClientOriginalName();
+            
+            // Get just the file name
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            
+            // Get the file extension
+            $extension = $file->getClientOriginalExtension();
+            
+            // Create a unique file name
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            
+            // $path = $file->storeAs('public/publications', $fileNameToStore);
+            $file->move(base_path('public/work'), $fileNameToStore);
+
+            $data['image'] = 'work/' . $fileNameToStore;
         }
-        $data['is_active'] = $request->boolean('is_active', true);
-        $data['priority']  = $data['priority'] ?? $work->priority;
+
+        $data['is_active'] = (bool) ($data['is_active'] ?? false);
 
         $work->update($data);
-        return back()->with('success','Work updated.');
+
+        return redirect()->route('manage-works.edit', $work->id)->with('success', 'Work updated.');
     }
 
     public function destroy(Work $work)
     {
-        if ($work->image) Storage::disk('public')->delete($work->image);
         $work->delete();
-        return back()->with('success','Deleted.');
+        return back()->with('success', 'Work deleted.');
+    }
+
+    protected function validated(Request $request, ?int $ignoreId = null): array
+    {
+        return $request->validate([
+            'title'            => ['required','string','max:255'],
+            'slug'             => [
+                'nullable','string','max:255',
+                Rule::unique('works','slug')->ignore($ignoreId)
+            ],
+            'work_category_id' => ['nullable','exists:work_categories,id'],
+            'author_name'      => ['nullable','string','max:255'],
+            'excerpt'          => ['nullable','string','max:300'],
+            'body'             => ['nullable','string'],
+            'image'            => ['nullable','image','max:2048'],
+            'published_at'     => ['nullable','date'],
+            'priority'         => ['nullable','integer'],
+            'is_active'        => ['nullable','in:0,1'],
+        ]);
     }
 }

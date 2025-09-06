@@ -18,11 +18,20 @@ class SettingController extends Controller
         'event_image' => 'Event Page Banner Image',
         'event_registration_image' => 'Event Registration Page Banner Image',
         'gallery_image' => 'Gallery Page Banner Image',
+        'our_focus_area_image' => 'Our Foucs Area Page Banner Image',
         'our_work_image' => 'Our Work Page Banner Image',
         'committee_image' => 'Committee Page Banner Image',
         'membership_image' => 'Membership Page Banner Image',
         'contact_image' => 'Contact Page Banner Image',
         'donation_image' => 'Donation Page Banner Image',
+    ];
+
+    protected $basic_infos = [
+        'home_page_section_title' => 'Home Page Section Title',
+        'home_page_section_description' => 'Home Page Section Description',
+        'home_page_footer_description' => 'Home Page footer Description',
+        'about_page_description' => 'About Page Description',
+        'membership_section_description' => 'Membership Section Desctiption',
     ];
 
     protected $socials = [
@@ -94,20 +103,41 @@ class SettingController extends Controller
 
     public function get_contact_setting()
     {
-
-        return view('admin.basic_contact_setting.page', compact('pages'));
+        return view('admin.basic_contact_setting.page');
     }
 
  
     public function store_contact_settings(Request $request)
     {
-            $socials = [
+            $contacts = [
                 'contact_address',
                 'contact_telephone',
                 'contact_email',
+                'contact_location'
             ];
 
-        foreach ($socials as $key) {
+        foreach ($contacts as $key) {
+            Setting::updateOrCreate(['key' => $key], ['value' =>  $request[$key] ?? '']);
+        }
+
+        Cache::forget('GlobalSettings');
+
+        return redirect()->back()->with('success', 'Images updated successfully!');
+    }
+
+    public function get_basic_info_setting()
+    {
+        return view('admin.basic_info_setting.page', [
+            'basic_infos' => $this->basic_infos
+        ]);
+    }
+
+ 
+    public function store_basic_info_settings(Request $request)
+    {
+        $basic_infos = $this->basic_infos;
+
+        foreach ($basic_infos as $key => $value) {
             Setting::updateOrCreate(['key' => $key], ['value' =>  $request[$key] ?? '']);
         }
 

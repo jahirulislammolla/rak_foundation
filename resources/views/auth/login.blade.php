@@ -37,9 +37,8 @@
 
                 <div class="card shadow-lg auth-card mt-4">
                     <div class="card-body p-4 p-md-5">
-                        <div class="text-center mb-4">
+                        <div class="text-center mb-3">
                             <h1 class="h3 text-warning">Welcome</h1>
-                            <p class="text-secondary mb-0">Please sign in to continue</p>
                         </div>
 
                         <form method="POST" action="{{ route('login') }}" novalidate>

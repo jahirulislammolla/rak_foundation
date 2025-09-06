@@ -16,6 +16,18 @@ class CommitteeController extends Controller
         return view('admin.committees.index', compact('committees'));
     }
 
+    public function create()
+    {
+        $committee = new Committee(); // form defaults
+        return view('admin.committees.create', compact('committee'));
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $committee = Committee::find($id);
+
+        return view('admin.committees.edit', compact('committee'));
+    }
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -27,17 +39,37 @@ class CommitteeController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('committees','public');
+            $file = $request->file('photo');
+                        // Get file name with extension
+            $fileNameWithExt = $file->getClientOriginalName();
+            
+            // Get just the file name
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            
+            // Get the file extension
+            $extension = $file->getClientOriginalExtension();
+            
+            // Create a unique file name
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            
+            // $path = $file->storeAs('public/publications', $fileNameToStore);
+            $file->move(base_path('public/committee'), $fileNameToStore);
+
+            $data['photo'] = 'committee/' . $fileNameToStore;
         }
+
         $data['priority'] = $data['priority'] ?? 0;
 
-        Committee::create($data);
+        $committee = Committee::create($data);
 
-        return back()->with('success','Committee member created.');
+        return redirect()->route('manage-committees.edit', $committee->id)
+            ->with('success', 'Committee member created.');
     }
 
-    public function update(Request $request, Committee $committee)
+    public function update(Request $request, $id)
     {
+        $committee = Committee::find($id);
+
         $data = $request->validate([
             'name'               => ['required','string','max:190'],
             'designation'        => ['required','string','max:190'],
@@ -47,15 +79,29 @@ class CommitteeController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            if ($committee->photo) {
-                Storage::disk('public')->delete($committee->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('committees','public');
+            $file = $request->file('photo');
+                        // Get file name with extension
+            $fileNameWithExt = $file->getClientOriginalName();
+            
+            // Get just the file name
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            
+            // Get the file extension
+            $extension = $file->getClientOriginalExtension();
+            
+            // Create a unique file name
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            
+            // $path = $file->storeAs('public/publications', $fileNameToStore);
+            $file->move(base_path('public/committee'), $fileNameToStore);
+
+            $data['photo'] = 'committee/' . $fileNameToStore;
         }
 
         $committee->update($data);
 
-        return back()->with('success','Committee member updated.');
+        return redirect()->route('manage-committees.edit', $committee->id)
+            ->with('success', 'Committee member updated.');
     }
 
     public function destroy(Committee $committee)

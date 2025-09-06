@@ -6,112 +6,118 @@ use App\Http\Controllers\Controller;
 use App\Models\FocusArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class FocusAreaController extends Controller
 {
-    // PUBLIC: grid page (your “Our Focus Area” section)
-    public function publicIndex()
-    {
-        $items = FocusArea::active()->orderBy('order')->get();
-        return view('focus-areas.index', compact('items'));
-    }
-
-    // PUBLIC: full details page
-    public function show($slug) 
-    {
-        $focus_area = FocusArea::where('slug', $slug)->first();
-        if (!$focus_area) {
-            abort(404); // Proper 404 page দেখাবে
-        }
-        return view('focus_area_details', compact('focus_area'));
-    }
-
-    // ADMIN: list
     public function index()
     {
-        $items = FocusArea::orderBy('order')->paginate(20);
+        $items = FocusArea::query()->orderBy('order')->paginate(15);
         return view('admin.focus-areas.index', compact('items'));
     }
 
-    // ADMIN: create
     public function create()
     {
-        return view('admin.focus-areas.create');
+        $item = new FocusArea(); // empty model for form binding
+        return view('admin.focus-areas.create', compact('item'));
     }
 
-    // ADMIN: store
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title'              => 'required|string|max:190',
-            'slug'               => 'nullable|string|max:190|unique:focus_areas,slug',
-            'icon_class'         => 'nullable|string|max:190',
-            'image'              => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
-            'short_description'  => 'nullable|string|max:255',
-            'description'        => 'nullable|string',
-            'order'              => 'nullable|integer|min:0',
-            'is_active'          => 'nullable|boolean',
-        ]);
+        $data = $this->validated($request);
 
-        // slug generate if not provided
-        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
-        // make slug unique if clash
-        if (FocusArea::where('slug',$data['slug'])->exists()) {
-            $data['slug'] .= '-'.Str::random(4);
-        }
+        // slug auto if empty
+        $data['slug'] = $data['slug'] ?: Str::slug($data['title']);
+        // store() এবং update()—দুটোতেই
+        $data['is_active'] = (int) $request->input('is_active', 1);
 
+        // image store
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('focus-areas', 'public');
+            $file = $request->file('image');
+                        // Get file name with extension
+            $fileNameWithExt = $file->getClientOriginalName();
+            
+            // Get just the file name
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            
+            // Get the file extension
+            $extension = $file->getClientOriginalExtension();
+            
+            // Create a unique file name
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            
+            // $path = $file->storeAs('public/publications', $fileNameToStore);
+            $file->move(base_path('public/images'), $fileNameToStore);
+
+            $data['image'] = 'images/' . $fileNameToStore;
         }
 
-        $data['is_active'] = $request->boolean('is_active', true);
-        $data['order']     = $data['order'] ?? 0;
+        $foucsArea = FocusArea::create($data);
 
-        FocusArea::create($data);
-
-        return redirect()->route('admin.focus-areas.index')
-            ->with('success','Focus area created.');
+        return redirect()->route('manage-focus-area.edit', $foucsArea->id)
+            ->with('success', 'Focus area created successfully.');
     }
 
-    // ADMIN: edit
-    public function edit(FocusArea $focusArea)
+    public function edit(FocusArea $focus_area)
     {
-        return view('admin.focus-areas.edit', ['item'=>$focusArea]);
+        $item = $focus_area;
+        return view('admin.focus-areas.edit', compact('item'));
     }
 
-    // ADMIN: update
-    public function update(Request $request, FocusArea $focusArea)
+    public function update(Request $request, FocusArea $focus_area)
     {
-        $data = $request->validate([
-            'title'              => 'required|string|max:190',
-            'slug'               => 'nullable|string|max:190|unique:focus_areas,slug,'.$focusArea->id,
-            'icon_class'         => 'nullable|string|max:190',
-            'image'              => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
-            'short_description'  => 'nullable|string|max:255',
-            'description'        => 'nullable|string',
-            'order'              => 'nullable|integer|min:0',
-            'is_active'          => 'nullable|boolean',
-        ]);
+        $data = $this->validated($request, $focus_area->id);
 
-        $data['slug'] = $data['slug'] ? Str::slug($data['slug']) : Str::slug($data['title']);
+        $data['slug'] = $data['slug'] ?: Str::slug($data['title']);
+        $data['is_active'] = (int) $request->input('is_active', 1);
 
+        // image store
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('focus-areas', 'public');
+            $file = $request->file('image');
+                        // Get file name with extension
+            $fileNameWithExt = $file->getClientOriginalName();
+            
+            // Get just the file name
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            
+            // Get the file extension
+            $extension = $file->getClientOriginalExtension();
+            
+            // Create a unique file name
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            
+            // $path = $file->storeAs('public/publications', $fileNameToStore);
+            $file->move(base_path('public/foucsArea'), $fileNameToStore);
+
+            $data['image'] = 'foucsArea/' . $fileNameToStore;
         }
 
-        $data['is_active'] = $request->boolean('is_active', true);
-        $data['order']     = $data['order'] ?? $focusArea->order;
+        $focus_area->update($data);
 
-        $focusArea->update($data);
-
-        return redirect()->route('admin.focus-areas.index')
-            ->with('success','Focus area updated.');
+        return redirect()->route('manage-focus-area.edit', $focus_area->id)
+            ->with('success', 'Focus area updated successfully.');
     }
 
-    // ADMIN: delete
-    public function destroy(FocusArea $focusArea)
+    public function destroy(FocusArea $focus_area)
     {
-        $focusArea->delete();
-        return back()->with('success','Deleted.');
+        if ($focus_area->image && Storage::disk('public')->exists($focus_area->image)) {
+            Storage::disk('public')->delete($focus_area->image);
+        }
+        $focus_area->delete();
+
+        return back()->with('success', 'Focus area deleted.');
+    }
+
+    private function validated(Request $request, $ignoreId = null): array
+    {
+        return $request->validate([
+            'title'             => ['required', 'string', 'max:255'],
+            'slug'              => ['nullable', 'string', 'max:255', 'unique:focus_areas,slug' . ($ignoreId ? ',' . $ignoreId : '')],
+            'order'             => ['nullable', 'integer', 'min:0'],
+            'short_description' => ['nullable', 'string', 'max:255'],
+            'description'       => ['nullable', 'string'],
+            'image'             => ['nullable', 'image', 'max:2048'], // 2MB
+            'is_active'         => ['nullable'],
+        ]);
     }
 }

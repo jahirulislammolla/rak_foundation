@@ -27,7 +27,7 @@ class MessageController extends Controller
             ]
         );
 
-        return response()->json(['success' => 'Message stored successfully.']);
+        return redirect()->back()->with(['success' => 'Message stored successfully.']);
     }
 
     // Show a list of messages

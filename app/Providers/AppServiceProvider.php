@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Menu;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
@@ -27,13 +28,10 @@ class AppServiceProvider extends ServiceProvider
      public function menus() {
         // Cache::forget('AdminPanelMenus');
 
-        return Cache::rememberForever('AdminPanelMenus', function () {
-            return Menu::query()
+        return Menu::query()
                 ->with('submenu')
-                ->mainMenu()
                 ->orderBy('title')
                 ->get();
-        });
     }
 
     public function boot(): void
@@ -52,6 +50,11 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('menus', $this->menus());
             }
         });
+
+        // Share global settings
+        View::share('settings', Cache::rememberForever('GlobalSettings', function () {
+            return Setting::pluck('value', 'key');
+        }));
 
     }
 }

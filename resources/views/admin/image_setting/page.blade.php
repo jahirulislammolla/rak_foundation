@@ -4,12 +4,8 @@
     </div>
 
     <div class="px-3">
-        <form action="{{ route('store_settings') }}" method="POST" enctype="multipart/form-data" class="mt-6 space-y-6">
+        <form action="{{ route('image_store_settings') }}" method="POST" enctype="multipart/form-data" class="mt-6 space-y-6">
             @csrf
-
-            @php
-
-            @endphp
 
             {{-- Image Upload Section --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
