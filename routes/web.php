@@ -89,6 +89,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/store-contact-settings', [SettingController::class, 'store_contact_settings'])->name('store_contact_settings');
     Route::get('/basic-info-settings', [SettingController::class, 'get_basic_info_setting'])->name('basic_info_settings');
     Route::post('/store-basic-info-settings', [SettingController::class, 'store_basic_info_settings'])->name('store_basic_info_settings');
+    Route::get('/page-title-settings', [SettingController::class, 'get_page_title_setting'])->name('page_title_settings');
+    Route::post('/store-page-title-settings', [SettingController::class, 'store_page_title_settings'])->name('store_page_title_settings');
 
 
 
