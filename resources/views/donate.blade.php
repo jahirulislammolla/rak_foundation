@@ -82,7 +82,7 @@
                     <img alt="Image" class="w-100 animate-zoom" height="420px" src="{{ asset( $settings['donation_image'] ?? '') }}" />
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
-                            <h2 class="display-5 text-white animated zoomIn">Support RAK Foundation</h2>
+                            <h2 class="display-5 text-white animated zoomIn">Support Our Foundation</h2>
                         </div>
                     </div>
                 </div>

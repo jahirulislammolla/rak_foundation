@@ -74,7 +74,7 @@
 				<div class="mb-4">
 					{!! $settings['about_page_description'] ?? '' !!}
 				</div>
-				<a class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s" href="/donate">DONATE US</a>
+				{{-- <a class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s" href="/donate">DONATE US</a> --}}
 			</div>
 			<div class="col-lg-5" style="min-height: 500px;">
 				<div class="position-relative h-100">

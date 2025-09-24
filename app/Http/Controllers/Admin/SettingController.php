@@ -12,6 +12,8 @@ class SettingController extends Controller
     //
     protected $images = [
         'logo_image' => 'Logo Image',
+        'footer_image' => 'Footer Logo Image',
+        'icon_image' => 'Favicon Icon Image',
         'home_image' => 'Home Page Banner Image',
         'home_section_image' => 'Home Page Section Image',
         'about_image' => 'About Page Banner Image',
@@ -26,8 +28,13 @@ class SettingController extends Controller
         'donation_image' => 'Donation Page Banner Image',
     ];
 
-    protected $basic_infos = [
+    protected $page_titles = [
+        'page_top_title' => 'Page Top Title',
+        'home_page_main_title' => 'Home Page Main Title',
         'home_page_section_title' => 'Home Page Section Title',
+    ];
+
+    protected $basic_infos = [
         'home_page_section_description' => 'Home Page Section Description',
         'home_page_footer_description' => 'Home Page footer Description',
         'about_page_description' => 'About Page Description',
@@ -47,6 +54,7 @@ class SettingController extends Controller
             'images' => $this->images,
         ]);
     }
+
     public function image_store_setting(Request $request)
     {
 
@@ -138,6 +146,27 @@ class SettingController extends Controller
         $basic_infos = $this->basic_infos;
 
         foreach ($basic_infos as $key => $value) {
+            Setting::updateOrCreate(['key' => $key], ['value' =>  $request[$key] ?? '']);
+        }
+
+        Cache::forget('GlobalSettings');
+
+        return redirect()->back()->with('success', 'Images updated successfully!');
+    }
+
+    public function get_page_title_setting()
+    {
+        return view('admin.page_title_setting.page', [
+            'page_titles' => $this->page_titles
+        ]);
+    }
+
+ 
+    public function store_page_title_settings(Request $request)
+    {
+        $page_titles = $this->page_titles;
+
+        foreach ($page_titles as $key => $value) {
             Setting::updateOrCreate(['key' => $key], ['value' =>  $request[$key] ?? '']);
         }
 
