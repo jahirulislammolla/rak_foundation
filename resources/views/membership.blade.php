@@ -44,6 +44,7 @@
 		background-color: rgba(0, 149, 255, 0.389) !important;
 		background: linear-gradient(rgba(9, 30, 62, .7), rgba(9, 30, 62, .7)), url('{{ asset('img/aboutus.png') }}') center center no-repeat;
 	} */
+
     </style>
     {{-- <div
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
@@ -55,8 +56,7 @@
         <div class="carousel" data-bs-ride="carousel" id="header-carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img alt="Image" class="w-100 animate-zoom" height="420px"
-                        src="{{ asset('img/join_membership.png') }}" />
+                    <img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);" src="{{ asset('img/join_membership.png') }}" />
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             <h2 class="display-5 text-white animated zoomIn">Membership</h2>
@@ -73,23 +73,18 @@
             <div class="row g-5 justify-center" style="justify-content: center;">
                 <div class="col-lg-6">
                     <div class="section-title position-relative pb-3 mb-5">
-                        <h2 class="fw-bold text-primary text-uppercase">Become a RAK Member</h5>
+                        <h2 class="fw-bold text-primary text-uppercase">Become a Foundation Member</h5>
                     </div>
                     <div class="mb-4" style="font-size: 20px;">
 
                         {!! $settings['membership_section_description'] ?? '' !!}
                     </div>
 
-                    <a class="btn btn-primary py-3 px-4 mt-3 zoomIn"
-                        href="{{ route('member.apply') }}"
-                        style="background-color: rgba(255, 68, 0, 0.899); border-radius: 5px;">
-                        Apply for Membership
-                    </a>
+                    <x-dyn-button page="member" key="apply_membership" fallbackText="Apply for Membership" fallbackUrl="{{ route('member.apply') }}" />
                 </div>
                 <div class="col-lg-5" style="min-height: 500px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s"
-                            src="{{ asset('img/membership.png') }}" style="object-fit: cover;" />
+                        <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s" src="{{ asset('img/membership.png') }}" style="object-fit: cover;" />
                     </div>
                 </div>
             </div>

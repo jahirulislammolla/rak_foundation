@@ -82,7 +82,7 @@
         <div class="carousel" data-bs-ride="carousel" id="header-carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img alt="Image" class="w-100 animate-zoom" height="420px"
+                    <img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);" 
                         src="{{ asset($settings['our_focus_area_image'] ?? '') }}" />
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">

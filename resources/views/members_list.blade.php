@@ -12,7 +12,7 @@
         <div id="header-carousel" class="carousel" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="{{ asset('img/join_membership.png') }}" class="w-100 animate-zoom" height="420" alt="Membership">
+                    <img src="{{ asset('img/join_membership.png') }}" class="w-100  animate-zoom" style="height: calc(100svh / 2);"  alt="Membership">
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width:900px;">
                             <h2 class="display-5 text-white">Member</h2>

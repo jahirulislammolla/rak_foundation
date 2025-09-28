@@ -40,19 +40,27 @@
             color: white;
         }
 
+
+  .title-responsive { font-size: 1.5rem; }               /* xs <576px */
+    @media (min-width: 576px){ .title-responsive { font-size: 1.75rem; } } /* sm */
+    @media (min-width: 768px){ .title-responsive { font-size: 2rem; } }    /* md */
+    @media (min-width: 992px){ .title-responsive { font-size: 2.5rem; } }  /* lg */
+    @media (min-width:1200px){ .title-responsive { font-size: 3rem; } }    /* xl */
+    @media (min-width:1400px){ .title-responsive { font-size: 3.5rem; } }  /* xxl */
+
     </style>
     <div class="container-fluid position-relative p-0">
         <div class="carousel" data-bs-ride="carousel" id="header-carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img alt="Image" class="w-100 animate-zoom" src="{{ asset('img/backgroud_donate.png') }}" />
+                    <img alt="Image" class="w-100 animate-zoom" style="height: 100dvh;" src="{{ asset($settings['home_image'] ?? '') }}" />
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
-                            <h1 class="display-1 text-white mb-md-4 animated zoomIn text-uppercase">Together f0or a Better Tomorrow</h1>
-                            <a class="btn btn-primary py-md-3 px-md-5 me-3 animated slideIn" href="/donate">Help Us
+                            <h1 class="title-responsive text-white mb-md-4 animated zoomIn text-uppercase">{{ $settings['home_page_main_title'] ?? 'Together for a Better Tomorrow' }}</h1>
+                            {{-- <a class="btn btn-danger py-md-3 px-md-5 me-3 animated slideIn" href="/member-application">Join Us
                                 <i class="fa fa-arrow me-1"></i></a>
-                            <a class="btn btn-danger py-md-3 px-md-5 me-3 animated slideIn" href="/login">Join Us
-                                <i class="fa fa-arrow me-1"></i></a>
+                                 --}}
+                            <x-dyn-button page="home" key="join_us" fallbackText="Join Us" fallbackUrl="/member-application" />
 
                         </div>
                     </div>
@@ -98,7 +106,7 @@
                  border-radius: 15px; box-shadow:0 25px 50px -12px #00000057;">
                 <div class="col-lg-6">
                     <div class="position-relative h-100">
-                        <img style="z-index: 1;" class="position-absolute w-100 h-100 rounded" data-wow-delay="0.9s" src="{{ asset('img/donation.png') }}" style="object-fit: cover;" />
+                        <img style="z-index: 1;" class="position-absolute w-100 h-100 rounded" data-wow-delay="0.9s" src="{{ asset($settings['home_section_image'] ?? '') }}" style="object-fit: cover;" />
                     </div>
                 </div>
                 <div class="col-lg-6 py-20 px-5" style="padding: 70px 0px;">
@@ -106,10 +114,10 @@
                         <h2 class="mb-0">{!! $settings['home_page_section_title'] ?? '' !!}</h1>
                     </div>
                     <div class="text-gray-700 mb-3">
-                       {!! $settings['home_page_section_description'] ?? '' !!}
+                        {!! $settings['home_page_section_description'] ?? '' !!}
                     </div>
 
-                    <a class="btn btn-primary py-3 px-5 mt-3 wow zoomIn" data-wow-delay="0.9s" href="/donate">Sponsor Now</a>
+                    <x-dyn-button page="home" key="sponsor_now" fallbackText="Sponsor Now" fallbackUrl="/donate" />
                 </div>
             </div>
         </div>
@@ -164,7 +172,7 @@
             </div>
             <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.6s">
                 @foreach ($members as $member)
-                    
+
                 <div class="testimonial-item bg-light my-4">
                     <div class="d-flex align-items-center border-bottom pt-5 pb-4 px-5">
                         <img class="img-fluid rounded" src="{{ asset($member->photo_path) }}" style="width: 60px; height: 60px;" />

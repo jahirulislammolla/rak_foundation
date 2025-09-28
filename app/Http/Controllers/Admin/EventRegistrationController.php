@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class EventRegistrationController extends Controller
 {
     public function index(Request $request)
     {
-        $q       = trim((string) $request->get('q',''));
+        $q       = trim((string) $request->get('q', ''));
         $eventId = (int) $request->get('event_id', 0);
         $status  = $request->get('status'); // pending/verified/cancelled
 
@@ -19,21 +20,21 @@ class EventRegistrationController extends Controller
             ->with('event:id,title')
             ->when($eventId, fn($qq) => $qq->where('event_id', $eventId))
             ->when($status,  fn($qq) => $qq->where('status', $status))
-            ->when($q, function($qq) use ($q) {
-                $qq->where(function($w) use ($q) {
-                    $w->where('full_name','like',"%{$q}%")
-                      ->orWhere('email','like',"%{$q}%")
-                      ->orWhere('phone','like',"%{$q}%")
-                      ->orWhere('transaction_id','like',"%{$q}%");
+            ->when($q, function ($qq) use ($q) {
+                $qq->where(function ($w) use ($q) {
+                    $w->where('full_name', 'like', "%{$q}%")
+                        ->orWhere('email', 'like', "%{$q}%")
+                        ->orWhere('phone', 'like', "%{$q}%")
+                        ->orWhere('transaction_id', 'like', "%{$q}%");
                 });
             })
             ->orderByDesc('id')
             ->paginate(25)
             ->withQueryString();
 
-        $events = Event::orderBy('title')->get(['id','title']);
+        $events = Event::orderBy('title')->get(['id', 'title']);
 
-        return view('admin.event_registrations.index', compact('registrations','events','q','eventId','status'));
+        return view('admin.event_registrations.index', compact('registrations', 'events', 'q', 'eventId', 'status'));
     }
 
     public function destroy(EventRegistration $registration)
@@ -53,16 +54,55 @@ class EventRegistrationController extends Controller
     // Optional: CSV export
     public function export(Request $request)
     {
-        $fileName = 'event_registrations_'.now()->format('Ymd_His').'.csv';
-        $headers = ['Content-Type' => 'text/csv', 'Content-Disposition' => "attachment; filename=\"$fileName\""];
+        // Dynamic filename (event/status সহ)
+        $fileNameBase = 'event_registrations';
+        if ($request->filled('event_id')) {
+            $title = Event::find($request->event_id)?->title;
+            $fileNameBase .= '_' . Str::slug($title ?? ('event-' . $request->event_id));
+        }
+        if ($request->filled('status')) {
+            $fileNameBase .= '_' . Str::slug($request->status);
+        }
+        $fileName = $fileNameBase . '_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
+        ];
 
         $query = EventRegistration::with('event:id,title')->orderBy('id');
 
-        return response()->stream(function() use ($query) {
-            $out = fopen('php://output', 'w');
-            fputcsv($out, ['ID','Event','Name','Email','Phone','Ticket','Amount','Method','TxnID','Status','Created']);
+        // === Apply filters ===
+        if ($request->filled('event_id')) {
+            $query->where('event_id', $request->integer('event_id'));
+        }
 
-            $query->chunk(500, function($rows) use ($out) {
+        if ($request->filled('status')) {
+            $query->where('status', $request->string('status'));
+        }
+
+        if ($request->filled('q')) {
+            $search = '%' . $request->string('q') . '%';
+            $query->where(function ($q) use ($search) {
+                $q->where('full_name', 'like', $search)
+                    ->orWhere('email', 'like', $search)
+                    ->orWhere('phone', 'like', $search)
+                    ->orWhere('transaction_id', 'like', $search);
+            });
+        }
+        // =====================
+
+        return response()->stream(function () use ($query) {
+            $out = fopen('php://output', 'w');
+
+            // (Optional) Excel-friendly UTF-8 BOM
+            fprintf($out, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+            // CSV Header
+            fputcsv($out, ['ID', 'Event', 'Name', 'Email', 'Phone', 'Ticket', 'Amount', 'Method', 'TxnID', 'Status', 'Created']);
+
+            // Memory-safe streaming
+            $query->chunkById(1000, function ($rows) use ($out) {
                 foreach ($rows as $r) {
                     fputcsv($out, [
                         $r->id,
@@ -75,10 +115,11 @@ class EventRegistrationController extends Controller
                         $r->payment_method,
                         $r->transaction_id,
                         $r->status,
-                        $r->created_at,
+                        optional($r->created_at)->format('Y-m-d H:i:s'),
                     ]);
                 }
             });
+
             fclose($out);
         }, 200, $headers);
     }

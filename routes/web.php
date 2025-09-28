@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('manage-focus-area', FocusAreaController::class);
     Route::resource('manage-committees', CommitteeController::class);
     Route::resource('manage-members', MemberApplicationController::class);
+    Route::get('/admin/members/export', [MemberApplicationController::class, 'export'])
+     ->name('manage-members.export');
     Route::patch('manage-members/{memberApplication}/approve', [MemberApplicationController::class, 'approve'])->name('manage-members.approve');
     Route::patch('manage-members/{memberApplication}/reject', [MemberApplicationController::class, 'reject'])->name('manage-members.reject');
     Route::resource('manage-works', WorkController::class);
@@ -91,7 +93,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/store-basic-info-settings', [SettingController::class, 'store_basic_info_settings'])->name('store_basic_info_settings');
     Route::get('/page-title-settings', [SettingController::class, 'get_page_title_setting'])->name('page_title_settings');
     Route::post('/store-page-title-settings', [SettingController::class, 'store_page_title_settings'])->name('store_page_title_settings');
-
+    Route::get('/settings/buttons-simple',  [SettingController::class, 'get_button_simple'])->name('settings.buttons.simple');
+    Route::post('/settings/buttons-simple', [SettingController::class, 'store_button_simple'])->name('settings.buttons.simple.store');
 
 
 });

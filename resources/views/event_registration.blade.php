@@ -16,7 +16,7 @@
         <div class="carousel" data-bs-ride="carousel" id="header-carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img alt="Image" class="w-100 animate-zoom" height="420px" src="{{ asset($settings['event_registration_image'] ?? '') }}" />
+                    <img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);"  src="{{ asset($settings['event_registration_image'] ?? '') }}" />
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             {{-- <h2 class="display-5 text-white animated zoomIn">Event Registration</h2> --}}
@@ -123,7 +123,14 @@
                             <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="terms" name="consent" {{ old('consent') ? 'checked' : '' }} required>
                                 <label class="form-check-label" for="terms">
-                                    I agree to the <a href="#">Terms & Conditions</a>.
+                                    I agree to the
+                                    <a href="#"
+                                    role="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#termsModal"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                        Terms & Conditions
+                                    </a>.
                                 </label>
                             </div>
 
@@ -136,4 +143,37 @@
             </div>
         </div>
     </div>
+    @php
+            // ডাটাবেস/সেটিংস থেকে আসলে এগুলো কন্ট্রোলার থেকে পাঠাও।
+            $termsTitle = $settings['terms_title'] ?? 'Event Terms & Conditions';
+            $termsHtml  = $settings['terms_and_condition'] ?? '<p>Our terms & condition</p>';
+        @endphp
+
+        {{-- Terms & Conditions Modal --}}
+        <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">{{ $termsTitle }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                {!! $termsHtml !!} {{-- trusted HTML; না হলে {{ $termsText }} ব্যবহার করো --}}
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                onclick="document.getElementById('terms').checked = true;">
+                Agree & Continue
+                </button>
+            </div>
+            </div>
+        </div>
+        </div>
+
 </x-app-layout>

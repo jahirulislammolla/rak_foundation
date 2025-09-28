@@ -5,7 +5,7 @@
                     <div class="d-flex flex-column align-items-center justify-content-center text-center h-100 bg-primary p-4">
                         <a href="index.html" class="navbar-brand">
                             <h1 class="m-0 text-white">
-                                <img src="img/logo.png" alt="Logo" style="width: 200px; height: auto; margin-right: 10px;" />
+                                <img src="{{ asset($settings['footer_image'] ?? '') }}" alt="Logo" style="height: 120px; margin-right: 10px;" />
                             </h1>
                         </a>
                         <div class="mt-3 mb-4">
@@ -73,10 +73,10 @@
             <div class="row justify-content-end">
                 <div class="col-lg-8 col-md-6">
                     <div class="d-flex align-items-center justify-content-center" style="height: 75px;">
-                        <p class="mb-0">&copy; <a class="text-warning" href="/">RAK Foundation</a>. All Rights Reserved. 
+                        <p class="mb-0">&copy; <a class="text-warning" href="/">{{ $settings['page_top_title'] ?? "Arena foundation" }}</a>. All Rights Reserved. 
 						
 						<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-						Designed by <a class="text-success" href="https://github.com/jahirulislammolla">Jahir Islam</a></p>
+						Developed by <a class="text-success" target="_blank" href="https://jahirulislammolla.github.io">Jahir Islam</a></p>
                     </div>
                 </div>
             </div>

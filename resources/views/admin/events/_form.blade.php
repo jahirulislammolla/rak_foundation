@@ -70,7 +70,7 @@
     </div>
 
     <div class="space-y-4">
-        <label class="block text-sm font-medium text-gray-700">Banner (500×400)</label>
+        <label class="block text-sm font-medium text-gray-700">Banner (600×400px)</label>
         <input type="file" name="banner" accept="image/*"
                class="block w-full text-sm text-gray-900 file:mr-4 file:rounded-md file:border-0 file:bg-gray-100 file:px-3 file:py-2 file:text-gray-700 hover:file:bg-gray-200"/>
 

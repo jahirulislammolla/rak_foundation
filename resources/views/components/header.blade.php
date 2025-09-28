@@ -9,8 +9,8 @@
     <div class="container-fluid position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
             <a href="/" class="navbar-brand p-0">
-                <h1 class="m-0">
-                    <img src="{{ asset($settings['logo_image']) ?? '' }}" alt="Logo" style="width: 120px; height: auto; margin-right: 10px;">
+                <h1 class="m-0 py-2">
+                    <img src="{{ asset($settings['logo_image']) ?? '' }}" alt="Logo" style="height: 90px; margin-right: 10px;">
                 </h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">

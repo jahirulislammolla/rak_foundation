@@ -6,7 +6,7 @@
     <title>@yield('title', 'Admin Panel')</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/background/icon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset($settings['icon_image'] ?? '') }}" type="image/x-icon">
 
     <!-- Tailwind -->
     <link href="{{ asset('assets/css/app_update.css') }}" rel="stylesheet">
@@ -208,7 +208,19 @@
                 <li class="pl-2 font-semibold">
                     <a href="{{ route('basic_info_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                         <i class="fas fa-cog w-5 text-center"></i>
-                        <span class="grow menu__title">Basic Info Setting</span>
+                        <span class="grow menu__title">Page Description Setting</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('page_title_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span class="grow menu__title">Page Title Setting</span>
+                    </a>
+                </li>
+                <li class="pl-2 font-semibold">
+                    <a href="{{ route('settings.buttons.simple') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span class="grow menu__title">Button Settings</span>
                     </a>
                 </li>
                 @endrole

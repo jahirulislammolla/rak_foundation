@@ -3,7 +3,10 @@
         <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h1 class="text-2xl font-bold">Event Registrations</h1>
             <div class="flex items-center gap-2">
-                <a href="{{ route('manage-event-registrations.export') }}" class="rounded bg-emerald-600 px-3 py-2 text-white hover:bg-emerald-700">Export CSV</a>
+                <a href="{{ route('manage-event-registrations.export') }}?{{ http_build_query(request()->only(['q','event_id','status'])) }}" class="rounded bg-emerald-600 px-3 py-2 text-white hover:bg-emerald-700">
+                    Export CSV
+                </a>
+
             </div>
         </div>
 

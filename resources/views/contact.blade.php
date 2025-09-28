@@ -38,20 +38,25 @@
 	.bg-hover-primary:hover h4{
 		color: white;
 	}
-	.bg-header {
-		background-color: rgba(0, 149, 255, 0.389) !important;
-		background: linear-gradient(rgba(9, 30, 62, .7), rgba(9, 30, 62, .7)), url("{{ asset($settings['contact_image']) ?? '' }}") center center no-repeat;
-	}
+
 </style>
 {{-- <div class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
 	id="spinner">
 	<div class="spinner"></div>
 </div> --}}
 <!-- Spinner End -->
-<div class="container-fluid bg-primary py-5 bg-header" style="margin-bottom: 90px;">
-	<div class="row py-5">
-		<div class="col-12 pt-lg-5 mt-lg-5 text-center pl-lg-20">
-			<h2 class="display-5 text-white animated zoomIn">Contact Us</h2>
+<div class="container-fluid position-relative p-0">
+	<div class="carousel" data-bs-ride="carousel" id="header-carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);"  src="{{ asset($settings['contact_image']) ?? '' }}" />
+				<div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+					<div class="p-3" style="max-width: 900px;">
+						<h2 class="display-5 text-white animated zoomIn">Contact Us</h2>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </div>

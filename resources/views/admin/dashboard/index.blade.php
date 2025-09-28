@@ -211,7 +211,23 @@
             <div class="p-3 border border-dashed bg-sky-300">
                 <a href="{{ route('basic_info_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
                     <i class="fas fa-cog w-5 text-center"></i>
-                    <span class="grow menu__title">Basic Info Setting</span>
+                    <span class="grow menu__title">Page Description Setting</span>
+                </a>
+            </div>
+        </li>
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('page_title_settings') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span class="grow menu__title">Page Title Setting</span>
+                </a>
+            </div>
+        </li>
+        <li class="font-semibold">
+            <div class="p-3 border border-dashed bg-sky-300">
+                <a href="{{ route('settings.buttons.simple') }}" class="h-8 flex items-center justify-between gap-2 cursor-pointer">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span class="grow menu__title">Button Settings</span>
                 </a>
             </div>
         </li>

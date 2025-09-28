@@ -18,7 +18,7 @@
         <div class="carousel" data-bs-ride="carousel" id="header-carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active" style="height: 100px;">
-                    {{-- <img alt="Image" class="w-100 animate-zoom" height="90px" src="{{ asset('img/login.jpg') }}" /> --}}
+                    {{-- <img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);" height="90px" src="{{ asset('img/login.jpg') }}" /> --}}
                 </div>
 
             </div>

@@ -18,7 +18,7 @@
         <div id="header-carousel" class="carousel" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img alt="Image" class="w-100 animate-zoom" height="420" src="{{ asset('img/join_membership.png') }}" />
+                    <img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);"  src="{{ asset('img/join_membership.png') }}" />
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             <h2 class="display-5 text-white animated zoomIn">Membership</h2>
@@ -92,12 +92,12 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="membership_type" id="mt_yearly"
                                                    value="yearly" {{ old('membership_type','yearly')==='yearly'?'checked':'' }}>
-                                            <label class="form-check-label" for="mt_yearly">Yearly (৳ 1000)</label>
+                                            <label class="form-check-label" for="mt_yearly">Yearly (৳ 0)</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="membership_type" id="mt_lifetime"
                                                    value="lifetime" {{ old('membership_type')==='lifetime'?'checked':'' }}>
-                                            <label class="form-check-label" for="mt_lifetime">Lifetime (৳ 5000)</label>
+                                            <label class="form-check-label" for="mt_lifetime">Lifetime (৳ 0)</label>
                                         </div>
                                         <div class="form-text">* Fee will be set automatically on submission.</div>
                                     </div>

@@ -70,7 +70,7 @@
 </div>
 
 <div class="mt-6 flex justify-end gap-3">
-    <a href="{{ route('mange-focus-area.index') }}" class="rounded border px-4 py-2">Cancel</a>
+    <a href="{{ route('manage-focus-area.index') }}" class="rounded border px-4 py-2">Cancel</a>
     <button class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
         {{ $isEdit ? 'Update' : 'Save' }}
     </button>
