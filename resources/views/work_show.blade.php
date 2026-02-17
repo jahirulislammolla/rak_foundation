@@ -1,6 +1,7 @@
 <x-app-layout>
     <style>
         .post-hero{ height: 380px; object-fit: cover; width:100%; }
+        .content img{ max-width: 100%; height: auto; display: block; }
     </style>
 
     <div class="container-fluid position-relative p-0">

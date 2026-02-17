@@ -94,8 +94,33 @@
     }
   })();
 
+    // Simple base64 upload adapter (no server required).
+    function Base64UploadAdapterPlugin( editor ) {
+      editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+        return {
+          upload: () => loader.file.then( file => new Promise( ( resolve, reject ) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve( { default: reader.result } );
+            reader.onerror = err => reject( err );
+            reader.readAsDataURL( file );
+          } ) )
+        };
+      };
+    }
+
     ClassicEditor
-        .create(document.querySelector('#body'))
+        .create(document.querySelector('#body'), {
+          // Enable image upload button; CDN build uses Base64UploadAdapter by default.
+          toolbar: [
+            'heading', '|',
+            'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+            'imageUpload', 'insertTable', 'undo', 'redo'
+          ],
+          image: {
+            toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
+          },
+          extraPlugins: [ Base64UploadAdapterPlugin ]
+        })
         .catch(error => {
             console.error(error);
         });
