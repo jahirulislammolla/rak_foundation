@@ -45,7 +45,7 @@ use Illuminate\Support\Facades\Route;
 */
 #'role:super-admin|admin'
 ## admin role permission route
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('permissions', PermissionController::class);
     Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
@@ -62,7 +62,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('manage-event-registrations', EventRegistrationController::class);
     Route::get('event-registrations-export', [EventRegistrationController::class, 'export'])
         ->name('manage-event-registrations.export');
-    Route::patch('event-registrations/{registration}/verify',
+    Route::patch(
+        'event-registrations/{registration}/verify',
         [EventRegistrationController::class, 'verify']
     )->name('manage-event-registrations.verify');
 
@@ -70,7 +71,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('manage-committees', CommitteeController::class);
     Route::resource('manage-members', MemberApplicationController::class);
     Route::get('/admin/members/export', [MemberApplicationController::class, 'export'])
-     ->name('manage-members.export');
+        ->name('manage-members.export');
     Route::patch('manage-members/{memberApplication}/approve', [MemberApplicationController::class, 'approve'])->name('manage-members.approve');
     Route::patch('manage-members/{memberApplication}/reject', [MemberApplicationController::class, 'reject'])->name('manage-members.reject');
     Route::resource('manage-works', WorkController::class);
@@ -95,8 +96,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/store-page-title-settings', [SettingController::class, 'store_page_title_settings'])->name('store_page_title_settings');
     Route::get('/settings/buttons-simple',  [SettingController::class, 'get_button_simple'])->name('settings.buttons.simple');
     Route::post('/settings/buttons-simple', [SettingController::class, 'store_button_simple'])->name('settings.buttons.simple.store');
-
-
 });
 // Public
 Route::get('/member-application', [PublicMembershipController::class, 'create'])->name('member.apply');
@@ -125,21 +124,21 @@ Route::middleware('auth')->group(function () {
 });
 // nomal route
 Route::get('/', function () {
-     $focus_areas = FocusArea::active()
-            ->orderBy('order')
-            ->orderBy('title')
-            ->get(['id','title','slug','icon_class','short_description','image']);
-    
-    $works = Work::query()
-            ->with('category:id,name')
-            ->where('is_active', 1)
-            ->orderByDesc('published_at')           // নতুনটা আগে
-            ->paginate(3)
-            ->withQueryString();
+    $focus_areas = FocusArea::active()
+        ->orderBy('order')
+        ->orderBy('title')
+        ->get(['id', 'title', 'slug', 'icon_class', 'short_description', 'image']);
 
-   $members = Member::approved()
-            ->latest('approved_at')
-            ->paginate(6);
+    $works = Work::query()
+        ->with('category:id,name')
+        ->where('is_active', 1)
+        ->orderByDesc('published_at')           // নতুনটা আগে
+        ->paginate(3)
+        ->withQueryString();
+
+    $members = Member::approved()
+        ->latest('approved_at')
+        ->paginate(6);
 
     return view('index', compact('focus_areas', 'works', 'members'));
 })->name('home');
@@ -159,34 +158,33 @@ Route::get('/membership', function () {
 
 Route::get('/events', function () {
     $events = Event::published()
-            ->upcoming()
-            ->orderByDesc('is_featured')
-            ->orderBy('priority')
-            ->orderBy('start_at')
-            ->paginate(12);
+        ->upcoming()
+        ->orderByDesc('is_featured')
+        ->orderBy('priority')
+        ->orderBy('start_at')
+        ->paginate(12);
 
     return view('event', compact('events'));
 });
 
 Route::get('/galleries', function () {
     $galleries = Gallery::where('is_active', true)
-            ->latest()
-            ->paginate(12);
+        ->latest()
+        ->paginate(12);
 
     return view('gallery', compact('galleries'));
-
 });
 
 Route::get('/our-work', function (Request $request) {
 
     $work = Work::where('slug', $request->slug)->first();
-    if($work)
-    {
+    if ($work) {
         return view('work_show', compact('work'));
     }
 
-    $q   = trim((string) $request->get('q', ''));
-    $cat = $request->get('cat'); // id or slug—এক্ষেত্রে id ধরছি
+    $q     = trim((string) $request->get('q', ''));
+    $cat   = $request->get('cat');
+    $range = $request->get('range', 'all'); // id or slug—এক্ষেত্রে id ধরছি
 
     $works = Work::query()
         ->with('category:id,name')
@@ -199,15 +197,23 @@ Route::get('/our-work', function (Request $request) {
                     ->orWhere('excerpt', 'like', "%{$q}%")
                     ->orWhere('body', 'like', "%{$q}%");
             });
+        })
+        ->when($range !== 'all', function ($qq) use ($range) {
+            $qq->whereNotNull('published_at');
+            if ($range === '3y') {
+                $qq->where('published_at', '>=', now()->subYears(3));
+            } elseif (preg_match('/^\d{4}$/', (string) $range)) {
+                $qq->whereYear('published_at', (int) $range);
+            }
         })              // উচ্চ প্রায়োরিটি আগে
         ->orderByRaw('published_at IS NULL')    // published না হলে পরে
         ->orderByDesc('published_at')           // নতুনটা আগে
         ->paginate(9)
         ->withQueryString();
 
-    $categories = WorkCategory::orderBy('name')->get(['id','name']);
+    $categories = WorkCategory::orderBy('name')->get(['id', 'name']);
 
-    return view('our_work', compact('works', 'categories', 'q', 'cat'));
+    return view('our_work', compact('works', 'categories', 'q', 'cat', 'range'));
 })->name('works.index');
 
 Route::get('/donate', function () {
@@ -223,20 +229,19 @@ Route::get('/event-registration', [PublicEventRegistrationController::class, 'in
 Route::post('/event-registration-store', [PublicEventRegistrationController::class, 'store'])->name('event_registrations.store');
 
 Route::get('/committees', function () {
-            // priority ছোট মান = আগে
+    // priority ছোট মান = আগে
     $members  = Committee::orderBy('priority')->orderBy('id')->get();
 
-    return view('committee', compact( 'members'));
+    return view('committee', compact('members'));
 });
 
-Route::get('/focus-areas', function(Request $request){
+Route::get('/focus-areas', function (Request $request) {
     $item = FocusArea::where('slug', $request->slug)->first();
-    if(!$item)
-    {
+    if (!$item) {
         $focus_areas = FocusArea::active()
             ->orderBy('order')
             ->orderBy('title')
-            ->get(['id','title','slug','icon_class','short_description','image']);
+            ->get(['id', 'title', 'slug', 'icon_class', 'short_description', 'image']);
         return view('focus_areas', compact('focus_areas'));
     }
     return view('focus_area', compact('item'));
@@ -245,14 +250,14 @@ Route::get('/focus-areas', function(Request $request){
 
 Route::get('/profile', function () {
     $profiles = Profile::query()
-    ->active()
-    ->orderBy('type', 'ASC')
-    ->orderBy('priority', 'ASC')
-    ->orderBy('id', 'DESC')
-    ->get();
+        ->active()
+        ->orderBy('type', 'ASC')
+        ->orderBy('priority', 'ASC')
+        ->orderBy('id', 'DESC')
+        ->get();
     return view('profile', compact('profiles'));
 });
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

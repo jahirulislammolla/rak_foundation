@@ -24,7 +24,7 @@ class WorkController extends Controller
 
     public function create()
     {
-        $categories = WorkCategory::query()->orderBy('name')->get(['id','name']);
+        $categories = WorkCategory::query()->orderBy('name')->get(['id', 'name']);
         $work = new Work(); // for form defaults
         return view('admin.works.create', compact('categories', 'work'));
     }
@@ -39,21 +39,21 @@ class WorkController extends Controller
             $data['slug'] = Str::slug($data['slug']);
         }
 
-                // image store
+        // image store
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-                        // Get file name with extension
+            // Get file name with extension
             $fileNameWithExt = $file->getClientOriginalName();
-            
+
             // Get just the file name
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            
+
             // Get the file extension
             $extension = $file->getClientOriginalExtension();
-            
+
             // Create a unique file name
             $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
-            
+
             // $path = $file->storeAs('public/publications', $fileNameToStore);
             $file->move(base_path('public/work'), $fileNameToStore);
 
@@ -61,17 +61,18 @@ class WorkController extends Controller
         }
 
         $data['is_active'] = (bool) ($data['is_active'] ?? false);
+        $data['image_widths'] = $this->parseImageWidths($request);
 
         $work = Work::create($data);
 
-       return redirect()->route('manage-works.edit', $work->id)->with('success', 'Work created.');
+        return redirect()->route('manage-works.edit', $work->id)->with('success', 'Work created.');
     }
 
     public function edit(Request $request, $id)
     {
         $work = Work::find($id);
 
-        $categories = WorkCategory::query()->orderBy('name')->get(['id','name']);
+        $categories = WorkCategory::query()->orderBy('name')->get(['id', 'name']);
         return view('admin.works.edit', compact('work', 'categories'));
     }
 
@@ -89,18 +90,18 @@ class WorkController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-                        // Get file name with extension
+            // Get file name with extension
             $fileNameWithExt = $file->getClientOriginalName();
-            
+
             // Get just the file name
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            
+
             // Get the file extension
             $extension = $file->getClientOriginalExtension();
-            
+
             // Create a unique file name
             $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
-            
+
             // $path = $file->storeAs('public/publications', $fileNameToStore);
             $file->move(base_path('public/work'), $fileNameToStore);
 
@@ -108,6 +109,7 @@ class WorkController extends Controller
         }
 
         $data['is_active'] = (bool) ($data['is_active'] ?? false);
+        $data['image_widths'] = $this->parseImageWidths($request);
 
         $work->update($data);
 
@@ -123,19 +125,32 @@ class WorkController extends Controller
     protected function validated(Request $request, ?int $ignoreId = null): array
     {
         return $request->validate([
-            'title'            => ['required','string','max:255'],
+            'title'            => ['required', 'string', 'max:255'],
             'slug'             => [
-                'nullable','string','max:255',
-                Rule::unique('works','slug')->ignore($ignoreId)
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('works', 'slug')->ignore($ignoreId)
             ],
-            'work_category_id' => ['nullable','exists:work_categories,id'],
-            'author_name'      => ['nullable','string','max:255'],
-            'excerpt'          => ['nullable','string','max:300'],
-            'body'             => ['nullable','string'],
-            'image'            => ['nullable','image','max:2048'],
-            'published_at'     => ['nullable','date'],
-            'priority'         => ['nullable','integer'],
-            'is_active'        => ['nullable','in:0,1'],
+            'work_category_id' => ['nullable', 'exists:work_categories,id'],
+            'author_name'      => ['nullable', 'string', 'max:255'],
+            'excerpt'          => ['nullable', 'string', 'max:300'],
+            'body'             => ['nullable', 'string'],
+            'image_widths'     => ['nullable', 'string'],
+            'image'            => ['nullable', 'image', 'max:2048'],
+            'published_at'     => ['nullable', 'date'],
+            'priority'         => ['nullable', 'integer'],
+            'is_active'        => ['nullable', 'in:0,1'],
         ]);
+    }
+
+    protected function parseImageWidths(Request $request): ?array
+    {
+        $raw = $request->input('image_widths');
+        if (!$raw) {
+            return null;
+        }
+        $decoded = json_decode($raw, true);
+        return is_array($decoded) ? $decoded : null;
     }
 }

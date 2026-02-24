@@ -15,6 +15,7 @@ class Work extends Model
         'published_at' => 'datetime',
         'priority'     => 'integer',
         'is_active'    => 'boolean',
+        'image_widths' => 'array',
     ];
 
     public function category() {

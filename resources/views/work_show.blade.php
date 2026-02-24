@@ -30,7 +30,7 @@
         </div>
 
         {{-- যদি body HTML-safe হয়: --}}
-        <div class="content">
+        <div class="content" id="work-content">
             {!! $work->body !!}
         </div>
 
@@ -38,4 +38,19 @@
             <a href="{{ route('works.index') }}" class="btn btn-outline-primary">← Back to Works</a>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const root = document.getElementById('work-content');
+            if (!root) return;
+            const widths = @json($work->image_widths ?? []);
+            const imgs = root.querySelectorAll('img');
+            imgs.forEach((img, i) => {
+                const v = Array.isArray(widths) ? widths[i] : null;
+                if (!v) return;
+                img.style.width = v + '%';
+                img.style.height = 'auto';
+            });
+        })();
+    </script>
 </x-app-layout>
