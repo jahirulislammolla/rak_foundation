@@ -1,55 +1,54 @@
 <x-app-layout>
-    <style>
-        .post-hero{ height: 380px; object-fit: cover; width:100%; }
-        .content img{ max-width: 100%; height: auto; display: block; }
-    </style>
+    <x-public-hero
+        badge="{{ $work->category?->name ?? 'Work Detail' }}"
+        title="{{ $work->title }}"
+        subtitle="{{ \Illuminate\Support\Str::limit($work->excerpt ?: strip_tags($work->body), 220) }}"
+        image="{{ $work->image ?: 'img/work.png' }}"
+        quote="A strong public work detail page should feel editorial, not accidental."
+        primary-text="Back to All Work"
+        primary-url="{{ route('works.index') }}"
+        secondary-text="Donate"
+        secondary-url="{{ route('donate.form') }}" />
 
-    <div class="container-fluid position-relative p-0">
-        <div class="carousel" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img alt="{{ $work->title }}" class="post-hero" src="{{ asset($work->image) }}" />
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h2 class="display-6 text-white animated zoomIn">{{ $work->title }}</h2>
-                            @if($work->category)
-                                <span class="text-white btn bg-primary mt-2">{{ $work->category->name }}</span>
-                            @endif
-                        </div>
-                    </div>
+    <section class="site-section">
+        <div class="site-container">
+            <div class="public-card">
+                <div class="meta-row mb-4">
+                    <span><i class="bi bi-person"></i> {{ $work->author_name ?: 'Organization Desk' }}</span>
+                    <span><i class="bi bi-calendar3"></i> {{ optional($work->published_at)->format('d M Y') ?: 'Draft' }}</span>
+                    @if($work->category)
+                        <span><i class="bi bi-bookmark"></i> {{ $work->category->name }}</span>
+                    @endif
+                </div>
+
+                <div class="rich-copy" id="work-content">
+                    {!! $work->body !!}
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ route('works.index') }}" class="site-btn-outline">Back to Works</a>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="container py-5 mx-auto" style="max-width: 1000px;">
-        <div class="mb-3 text-muted">
-            <i class="far fa-user me-2"></i>{{ $work->author_name ?: '—' }}
-            <span class="mx-2">•</span>
-            <i class="far fa-calendar-alt me-2"></i>{{ optional($work->published_at)->format('d M, Y') ?: 'Draft' }}
-        </div>
-
-        {{-- যদি body HTML-safe হয়: --}}
-        <div class="content" id="work-content">
-            {!! $work->body !!}
-        </div>
-
-        <div class="mt-4">
-            <a href="{{ route('works.index') }}" class="btn btn-outline-primary">← Back to Works</a>
-        </div>
-    </div>
+    </section>
 
     <script>
-        (function () {
+        (() => {
             const root = document.getElementById('work-content');
             if (!root) return;
             const widths = @json($work->image_widths ?? []);
-            const imgs = root.querySelectorAll('img');
-            imgs.forEach((img, i) => {
-                const v = Array.isArray(widths) ? widths[i] : null;
-                if (!v) return;
-                img.style.width = v + '%';
-                img.style.height = 'auto';
+            const images = root.querySelectorAll('img');
+
+            images.forEach((image, index) => {
+                const width = Array.isArray(widths) ? widths[index] : null;
+                image.style.height = 'auto';
+                image.style.borderRadius = '18px';
+                image.style.margin = '24px auto';
+                image.style.display = 'block';
+                image.style.maxWidth = '100%';
+                if (width) {
+                    image.style.width = width + '%';
+                }
             });
         })();
     </script>

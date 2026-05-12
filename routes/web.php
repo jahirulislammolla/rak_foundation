@@ -216,10 +216,6 @@ Route::get('/our-work', function (Request $request) {
     return view('our_work', compact('works', 'categories', 'q', 'cat', 'range'));
 })->name('works.index');
 
-Route::get('/donate', function () {
-    return view('donate');
-});
-
 // Public
 Route::get('/donate', [PublicDonateController::class, 'showForm'])->name('donate.form');
 Route::post('/donate', [PublicDonateController::class, 'store'])->name('donate.store');
@@ -248,15 +244,15 @@ Route::get('/focus-areas', function (Request $request) {
 })->name('focus-areas.show');
 
 
-Route::get('/profile', function () {
+Route::get('/our-profile', function () {
     $profiles = Profile::query()
         ->active()
         ->orderBy('type', 'ASC')
         ->orderBy('priority', 'ASC')
         ->orderBy('id', 'DESC')
         ->get();
-    return view('profile', compact('profiles'));
-});
+    return view('profile_public', compact('profiles'));
+})->name('public.profile');
 
 
 

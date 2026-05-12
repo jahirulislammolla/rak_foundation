@@ -1,68 +1,61 @@
-{{-- resources/views/events/index.blade.php --}}
 <x-app-layout>
-    <style>
-        @keyframes zoomInOut { 0%{transform:scale(1)} 50%{transform:scale(1.02)} 100%{transform:scale(1)} }
-        .animate-zoom { animation: zoomInOut 10s ease-in-out infinite; }
-        .event-card { border-radius:12px; overflow:hidden; box-shadow:0 6px 16px rgba(0,0,0,.1); transition:transform .3s ease; }
-        .event-card:hover { transform: translateY(-6px); }
-        .event-image { height:200px; width:100%; object-fit:cover; }
-    </style>
+    <x-public-hero
+        badge="Events"
+        title="Upcoming gatherings, campaigns, and community moments."
+        subtitle="Public events are now presented as premium campaign cards while keeping the same published and upcoming query chain."
+        image="{{ $settings['event_image'] ?? 'img/event.png' }}"
+        quote="Events are where community visibility turns into participation."
+        primary-text="Register for an Event"
+        primary-url="{{ url('/event-registration') }}"
+        secondary-text="Contact Team"
+        secondary-url="{{ url('/contact') }}" />
 
-    <div class="container-fluid position-relative p-0">
-        <div class="carousel" data-bs-ride="carousel" id="header-carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);"  src="{{ asset($settings['event_image'] ?? '') }}" />
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h2 class="display-5 text-white animated zoomIn">Upcoming Events</h2>
-                        </div>
-                    </div>
-                </div>
+    <section class="site-section">
+        <div class="site-container">
+            <div class="section-heading">
+                <span class="site-eyebrow">Calendar</span>
+                <h2>Active event opportunities.</h2>
+                <p>Only events passing the `published()` and `upcoming()` scopes appear here, ordered by featured priority and start date.</p>
             </div>
-        </div>
-    </div>
 
-    <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-4">
+            <div class="site-grid grid-3">
                 @forelse($events as $event)
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card event-card">
-                            <img src="{{ asset($event->banner_path) }}" class="card-img-top event-image" alt="{{ $event->title }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $event->title }}</h5>
-                                <p class="card-text">{{ Str::limit($event->short_description, 120) }}</p>
-                                <div style="display:flex; justify-content: space-between;">
-                                    <div class="text-muted mb-2">
-                                        <i class="bi bi-calendar-event"></i>
-                                        <strong>{{ $event->formatted_date }}</strong>
-                                    </div>
-                                    <div>
-                                        @php $days = $event->days_remaining; @endphp
-                                        @if(!is_null($days))
-                                            <small class="{{ $days <= 3 ? 'text-danger' : 'text-info' }}">⏳ {{ $days }} {{ Str::plural('day', $days) }}</small>
-                                        @else
-                                            <small class="text-muted">Ended</small>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="text-center mt-2">
-                                    <a href="{{ url('event-registration').'?event_id=' . $event->id }}" target="_blank" rel="noopener" class="btn btn-success" style="border-radius:3px;">Register Now</a>
-                                </div>
+                    <article class="public-card work-card content-stack">
+                        <div class="work-card__media">
+                            <img src="{{ asset($event->banner_path ?: 'img/event.png') }}" alt="{{ $event->title }}">
+                        </div>
+                        <div class="content-stack">
+                            <span class="badge-soft">
+                                <i class="bi bi-calendar-event"></i>
+                                {{ $event->formatted_date }}
+                            </span>
+                            <h3>{{ $event->title }}</h3>
+                            <p class="mb-0">{{ \Illuminate\Support\Str::limit($event->short_description, 140) }}</p>
+                            <div class="meta-row">
+                                <span><i class="bi bi-geo-alt"></i> {{ $event->location ?: 'Location to be announced' }}</span>
+                                <span>
+                                    @if(!is_null($event->days_remaining))
+                                        {{ $event->days_remaining }} day{{ $event->days_remaining === 1 ? '' : 's' }} left
+                                    @else
+                                        Event schedule updated
+                                    @endif
+                                </span>
+                            </div>
+                            <div>
+                                <a href="{{ url('event-registration') . '?event_id=' . $event->id }}" class="site-btn-outline">Register Now</a>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 @empty
-                    <div class="col-12">
-                        <div class="alert alert-info">No upcoming events available.</div>
+                    <div class="public-card">
+                        <p class="mb-0">No upcoming events are available right now.</p>
                     </div>
                 @endforelse
             </div>
 
             <div class="mt-4">
-                {{ $events->links() }}
+                {{ $events->links('pagination::bootstrap-5') }}
             </div>
         </div>
-    </div>
+    </section>
 </x-app-layout>

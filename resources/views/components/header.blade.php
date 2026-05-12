@@ -1,65 +1,50 @@
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner"></div>
-    </div>
-    <!-- Spinner End -->
+@php
+    $orgName = $settings['page_top_title'] ?? 'Social Organization';
+    $tagline = $settings['home_page_main_title'] ?? 'Collective action for lasting community progress';
 
+    $navItems = [
+        ['label' => 'Home', 'url' => route('home'), 'active' => request()->routeIs('home')],
+        ['label' => 'About', 'url' => url('/about'), 'active' => request()->is('about')],
+        ['label' => 'Focus Areas', 'url' => route('focus-areas.show'), 'active' => request()->is('focus-areas')],
+        ['label' => 'Work', 'url' => route('works.index'), 'active' => request()->is('our-work')],
+        ['label' => 'Events', 'url' => url('/events'), 'active' => request()->is('events') || request()->is('event-registration')],
+        ['label' => 'Gallery', 'url' => url('/galleries'), 'active' => request()->is('galleries')],
+        ['label' => 'Members', 'url' => route('members.index'), 'active' => request()->is('members') || request()->is('membership') || request()->is('member-application')],
+        ['label' => 'Committee', 'url' => url('/committees'), 'active' => request()->is('committees')],
+        ['label' => 'Contact', 'url' => url('/contact'), 'active' => request()->is('contact')],
+    ];
+@endphp
 
-    <!-- Navbar & Carousel Start -->
-    <div class="container-fluid position-relative p-0">
-        <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
-            <a href="/" class="navbar-brand p-0">
-                <h1 class="m-0 py-2">
-                    <img src="{{ asset($settings['logo_image']) ?? '' }}" alt="Logo" style="height: 90px; margin-right: 10px;">
-                </h1>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0">
-                    <a href="/" class="nav-item nav-link active">Home</a>
-                    <a href="/about" class="nav-item nav-link">About</a>
-                    <a href="/events" class="nav-item nav-link">Event</a>
-                    <a href="/galleries" class="nav-item nav-link">Gallery</a>
-                    <div class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Resources</a>
-                      <div class="dropdown-menu m-0">
-                          <a class="dropdown-item" href="/focus-areas">Our Focus Area</a>
-                          <a class="dropdown-item" href="/our-work">Our Work</a>
-                          <a class="dropdown-item" href="/committees">Our Committee</a>
-                          <a class="dropdown-item" href="/members">Our Member</a>
-                      </div>
-                  </div>
-                    <a href="/membership" class="nav-link nav-item">Membership</a>
-                    <a href="contact" class="nav-item nav-link">Contact</a>
+<header class="site-header">
+    <div class="">
+        <div class="site-header__bar">
+            <a href="{{ route('home') }}" class="site-brand">
+                <img class="site-brand__logo" src="{{ asset($settings['logo_image'] ?? 'img/logo_top.png') }}" alt="{{ $orgName }}">
+                <div class="site-brand__text">
+                    <strong>{{ $orgName }}</strong>
+                    <span>{{ \Illuminate\Support\Str::limit(strip_tags($tagline), 58) }}</span>
                 </div>
-                <butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
-                <a href="/donate" class="btn btn-primary py-2 px-4 ms-3">DONATE</a>
+            </a>
+
+            <button
+                type="button"
+                class="site-menu-toggle"
+                data-site-menu-toggle
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+
+            <div class="site-header__nav-wrap" data-site-nav>
+                <nav class="site-nav">
+                    @foreach($navItems as $item)
+                        <a href="{{ $item['url'] }}" class="site-nav__link {{ $item['active'] ? 'is-active' : '' }}">
+                            {{ $item['label'] }}
+                        </a>
+                    @endforeach
+                     <a href="{{ route('donate.form') }}" class="site-btn">Donate Now</a>
+                </nav>
             </div>
-        </nav>
+        </div>
     </div>
-    <!-- Navbar & Carousel End -->
-    <!-- Add this script before the closing </body> tag or in a JS file -->
-<script>
-  // Wait until DOM is ready
-  document.addEventListener("DOMContentLoaded", function () {
-    const currentPath = window.location.pathname;
-    const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
-
-    navLinks.forEach((link) => {
-      // Remove any previously active
-      link.classList.remove("active");
-
-      // Match by pathname
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("active");
-      }
-
-      // Optional: add special case for homepage
-      if ((currentPath === "/" || currentPath === "") && link.getAttribute("href") === "") {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
+</header>

@@ -2,40 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{{ $settings['page_top_title'] ?? "Arena foundation" }}</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $settings['page_top_title'] ?? 'Social Organization' }}</title>
+    <meta name="description" content="{{ strip_tags($settings['home_page_footer_description'] ?? 'Community impact, member engagement, events, and social programs.') }}">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset($settings['icon_image'] ?? '') }}" type="image/x-icon">
-
-    <!-- Google Web Fonts -->
+    <link rel="shortcut icon" href="{{ asset($settings['icon_image'] ?? 'favicon.ico') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/public-site.css') }}" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
+<body class="public-site">
+    <div class="site-shell">
+        @include('components.header')
 
-<body style='font-family: "Helvetica Neue", Arial, sans-serif;'>
-    @include('components.header')
-    {{-- =============================================== --}}
-    {{ $slot }}
- 
-    @include('components.footer')
-    
+        <main>
+            {{ $slot }}
+        </main>
+
+        @include('components.footer')
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (() => {
+            const toggle = document.querySelector('[data-site-menu-toggle]');
+            const panel = document.querySelector('[data-site-nav]');
+            if (!toggle || !panel) return;
+
+            toggle.addEventListener('click', () => {
+                const expanded = toggle.getAttribute('aria-expanded') === 'true';
+                toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+                panel.classList.toggle('is-open');
+            });
+        })();
+    </script>
 </body>
 </html>

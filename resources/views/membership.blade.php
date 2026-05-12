@@ -1,97 +1,47 @@
 <x-app-layout>
-    <!-- Spinner Start -->
-    <style>
-        @keyframes zoomInOut {
-            0% {
-                transform: scale(1);
-            }
+    <x-public-hero
+        badge="Membership"
+        title="Join a structured network working on real social priorities."
+        subtitle="{{ \Illuminate\Support\Str::limit(strip_tags($settings['membership_section_description'] ?? 'Membership is for people who want to contribute beyond sympathy through ideas, participation, advocacy, and support.'), 220) }}"
+        image="img/join_membership.png"
+        quote="A strong membership system gives an organization continuity, legitimacy, and collective intelligence."
+        primary-text="Apply for Membership"
+        primary-url="{{ route('member.apply') }}"
+        secondary-text="Meet Members"
+        secondary-url="{{ route('members.index') }}" />
 
-            50% {
-                transform: scale(1.02);
-            }
+    <section class="site-section">
+        <div class="site-container">
+            <div class="surface-split surface-split--reverse">
+                <div class="public-card p-0 overflow-hidden">
+                    <div class="person-card__media h-100">
+                        <img src="{{ asset('img/membership.png') }}" alt="Membership" style="height:100%; min-height:440px;">
+                    </div>
+                </div>
 
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .animate-zoom {
-            animation: zoomInOut 10s ease-in-out infinite;
-        }
-
-        .shadow-css {
-            box-shadow: 0 10px 24px -10px #00000057;
-            color: black;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .bg-hover-primary {
-            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
-            /* Adjust duration and easing as needed */
-        }
-
-        .bg-hover-primary:hover {
-            background-color: #113561bf !important;
-            color: white;
-        }
-
-        .bg-hover-primary:hover h4 {
-            color: white;
-        }
-
-        /* .bg-header {
-		background-color: rgba(0, 149, 255, 0.389) !important;
-		background: linear-gradient(rgba(9, 30, 62, .7), rgba(9, 30, 62, .7)), url('{{ asset('img/aboutus.png') }}') center center no-repeat;
-	} */
-
-    </style>
-    {{-- <div
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
-        id="spinner">
-        <div class="spinner"></div>
-    </div> --}}
-    <!-- Spinner End -->
-    <div class="container-fluid position-relative p-0">
-        <div class="carousel" data-bs-ride="carousel" id="header-carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);" src="{{ asset('img/join_membership.png') }}" />
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h2 class="display-5 text-white animated zoomIn">Membership</h2>
+                <div class="public-card copy-stack">
+                    <div class="section-heading mb-0">
+                        <span class="site-eyebrow">Why Join</span>
+                        <h2>Membership is the organization’s community backbone.</h2>
+                    </div>
+                    <div class="rich-copy">
+                        {!! $settings['membership_section_description'] ?? '<p>Members help shape programs, improve reach, support accountability, and sustain long-term growth for the organization.</p>' !!}
+                    </div>
+                    <div class="site-grid grid-2">
+                        <div class="public-card feature-card content-stack">
+                            <h3>Participation</h3>
+                            <p class="mb-0">Contribute to planning, outreach, and event mobilization.</p>
+                        </div>
+                        <div class="public-card feature-card content-stack">
+                            <h3>Belonging</h3>
+                            <p class="mb-0">Join a network of people who are serious about impact.</p>
                         </div>
                     </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5 justify-center" style="justify-content: center;">
-                <div class="col-lg-6">
-                    <div class="section-title position-relative pb-3 mb-5">
-                        <h2 class="fw-bold text-primary text-uppercase">Become a Foundation Member</h5>
-                    </div>
-                    <div class="mb-4" style="font-size: 20px;">
-
-                        {!! $settings['membership_section_description'] ?? '' !!}
-                    </div>
-
-                    <x-dyn-button page="member" key="apply_membership" fallbackText="Apply for Membership" fallbackUrl="{{ route('member.apply') }}" />
-                </div>
-                <div class="col-lg-5" style="min-height: 500px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s" src="{{ asset('img/membership.png') }}" style="object-fit: cover;" />
+                    <div>
+                        <x-dyn-button page="member" key="apply_membership" fallbackText="Apply for Membership" fallbackUrl="{{ route('member.apply') }}" />
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- About End -->
-    <!-- Team End -->
-    <!-- Vendor End -->
-    <!-- Footer Start -->
+    </section>
 </x-app-layout>

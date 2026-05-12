@@ -1,141 +1,100 @@
 <x-app-layout>
-<!-- Spinner Start -->
-<style>
-	@keyframes zoomInOut {
-		0% {
-			transform: scale(1);
-		}
+    <x-public-hero
+        badge="Contact"
+        title="Start a conversation with the team behind the programs."
+        subtitle="Questions, partnerships, volunteer interest, sponsorship conversations, and field coordination requests all start here."
+        image="{{ $settings['contact_image'] ?? 'img/contact.jpg' }}"
+        quote="Clear communication is one of the strongest trust signals any social organization can offer."
+        primary-text="Send Message"
+        primary-url="#contact-form"
+        secondary-text="Donate"
+        secondary-url="{{ route('donate.form') }}" />
 
-		50% {
-			transform: scale(1.05);
-		}
+    <section class="site-section">
+        <div class="site-container">
+            <div class="site-grid grid-3 mb-4">
+                <div class="public-card content-stack">
+                    <span class="badge-soft"><i class="bi bi-telephone"></i> Phone</span>
+                    <h3 class="mb-0">{{ $settings['contact_telephone'] ?? 'Not set' }}</h3>
+                    <p class="mb-0">Call for urgent questions, coordination, or follow-up.</p>
+                </div>
+                <div class="public-card content-stack">
+                    <span class="badge-soft"><i class="bi bi-envelope"></i> Email</span>
+                    <h3 class="mb-0">{{ $settings['contact_email'] ?? 'Not set' }}</h3>
+                    <p class="mb-0">Use email for partnership proposals and formal communication.</p>
+                </div>
+                <div class="public-card content-stack">
+                    <span class="badge-soft"><i class="bi bi-geo-alt"></i> Address</span>
+                    <h3 class="mb-0">Visit or write to us</h3>
+                    <p class="mb-0">{{ $settings['contact_address'] ?? 'Address not set' }}</p>
+                </div>
+            </div>
 
-		100% {
-			transform: scale(1);
-		}
-	}
+            <div class="surface-split">
+                <div class="public-card">
+                    @if(session('success'))
+                        <div class="notice-success">{{ session('success') }}</div>
+                    @endif
 
-	.animate-zoom {
-		animation: zoomInOut 10s ease-in-out infinite;
-	}
+                    @if ($errors->any())
+                        <div class="notice-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-	.shadow-css{
-		box-shadow: 0 10px 24px -10px #00000057;
-		color: black;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-	
-	.bg-hover-primary {
-		transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out; /* Adjust duration and easing as needed */
-	}
+                    <div class="section-heading">
+                        <span class="site-eyebrow">Message Form</span>
+                        <h2 id="contact-form">Tell us what you need.</h2>
+                        <p>We kept the existing `POST /messages` flow and validation fields intact, but moved it into a more polished contact experience.</p>
+                    </div>
 
-	.bg-hover-primary:hover {
-		background-color: #113561bf !important;
-		color: white;
-	}
+                    <form action="{{ route('message.store') }}" method="POST" class="site-form">
+                        @csrf
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="fullname">Your Name</label>
+                                <input id="fullname" type="text" name="fullname" value="{{ old('fullname') }}" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email">Your Email</label>
+                                <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="subject">Subject</label>
+                                <input id="subject" type="text" name="subject" value="{{ old('subject') }}" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" class="form-control" required>{{ old('message') }}</textarea>
+                            </div>
+                            <div class="col-12">
+                                <button class="site-btn border-0" type="submit">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-	.bg-hover-primary:hover h4{
-		color: white;
-	}
-
-</style>
-{{-- <div class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
-	id="spinner">
-	<div class="spinner"></div>
-</div> --}}
-<!-- Spinner End -->
-<div class="container-fluid position-relative p-0">
-	<div class="carousel" data-bs-ride="carousel" id="header-carousel">
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img alt="Image" class="w-100  animate-zoom" style="height: calc(100svh / 2);"  src="{{ asset($settings['contact_image']) ?? '' }}" />
-				<div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-					<div class="p-3" style="max-width: 900px;">
-						<h2 class="display-5 text-white animated zoomIn">Contact Us</h2>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-</div>
-<!-- Contact Start -->
-<div class="container-fluid py-2 wow fadeInUp" data-wow-delay="0.1s">
-	<div class="container py-1">
-		<div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-			<h5 class="fw-bold text-primary text-uppercase">Contact Us</h5>
-		</div>
-		<div class="row g-5 mb-5">
-			<div class="col-lg-4">
-				<div class="d-flex align-items-center wow fadeIn" data-wow-delay="0.1s">
-					<div class="bg-primary d-flex align-items-center justify-content-center rounded" style="width: 60px; height: 60px;">
-						<i class="fa fa-phone-alt text-white"></i>
-					</div>
-					<div class="ps-4">
-						<h5 class="mb-2">Call to ask any question</h5>
-						<h4 class="text-primary mb-0">{{ $settings['contact_telephone'] ?? '' }}</h4>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4">
-				<div class="d-flex align-items-center wow fadeIn" data-wow-delay="0.4s">
-					<div class="bg-primary d-flex align-items-center justify-content-center rounded" style="width: 60px; height: 60px;">
-						<i class="fa fa-envelope-open text-white"></i>
-					</div>
-					<div class="ps-4">
-						<h5 class="mb-2">Email to get free quote</h5>
-						<h4 class="text-primary mb-0">{{ $settings['contact_email'] ?? '' }}</h4>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4">
-				<div class="d-flex align-items-center wow fadeIn" data-wow-delay="0.8s">
-					<div class="bg-primary d-flex align-items-center justify-content-center rounded" style="width: 60px; height: 60px;">
-						<i class="fa fa-map-marker-alt text-white"></i>
-					</div>
-					<div class="ps-4">
-						<h5 class="mb-2">Visit our office</h5>
-						<h4 class="text-primary mb-0">{{ $settings['contact_address'] ?? '' }}</h4>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row g-5">
-			<div class="col-lg-6 wow slideInUp" data-wow-delay="0.3s">
-				<form action="{{ route('message.store') }}" method="POST">
-                    @csrf
-					<div class="row g-3">
-						<div class="col-md-6">
-							<input type="text" name="fullname" class="form-control border-0 bg-light px-4" placeholder="Your Name" style="height: 55px;">
-						</div>
-						<div class="col-md-6">
-							<input type="email" name="email" class="form-control border-0 bg-light px-4" placeholder="Your Email" style="height: 55px;">
-						</div>
-						<div class="col-12">
-							<input type="text" name="subject" class="form-control border-0 bg-light px-4" placeholder="Subject" style="height: 55px;">
-						</div>
-						<div class="col-12">
-							<textarea name="message" class="form-control border-0 bg-light px-4 py-3" rows="4" placeholder="Message"></textarea>
-						</div>
-						<div class="col-12">
-							<button class="btn btn-success w-100 py-3" type="submit">Send Message</button>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="col-lg-6 wow slideInUp" data-wow-delay="0.6s">
-				<iframe class="position-relative rounded w-100 h-100"
-					src="{{ $settings['contact_location'] ?? '' }}"
-					frameborder="0" style="min-height: 350px; border:0;" allowfullscreen="" aria-hidden="false"
-					tabindex="0"></iframe>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- Contact End -->
-<!-- About End -->
-<!-- Team End -->
-<!-- Vendor End -->
-<!-- Footer Start -->
+                <div class="public-card p-0 overflow-hidden">
+                    @if(!empty($settings['contact_location']))
+                        <iframe
+                            class="w-100 h-100"
+                            src="{{ $settings['contact_location'] }}"
+                            frameborder="0"
+                            style="min-height: 520px; border: 0;"
+                            allowfullscreen
+                            loading="lazy"></iframe>
+                    @else
+                        <div class="p-5 copy-stack">
+                            <h3>Location map not configured.</h3>
+                            <p class="mb-0">Set `contact_location` in settings to render the embedded map on this page.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </section>
 </x-app-layout>
