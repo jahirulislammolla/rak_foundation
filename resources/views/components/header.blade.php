@@ -10,9 +10,13 @@
         ['label' => 'Events', 'url' => url('/events'), 'active' => request()->is('events') || request()->is('event-registration')],
         ['label' => 'Gallery', 'url' => url('/galleries'), 'active' => request()->is('galleries')],
         ['label' => 'Members', 'url' => route('members.index'), 'active' => request()->is('members') || request()->is('membership') || request()->is('member-application')],
-        ['label' => 'Committee', 'url' => url('/committees'), 'active' => request()->is('committees')],
+        ['label' => 'Impact', 'url' => route('impact.index'), 'active' => request()->routeIs('impact.index')],
+        ['label' => 'Volunteer', 'url' => route('volunteer.index'), 'active' => request()->routeIs('volunteer.index')],
+        ['label' => 'News', 'url' => route('news.index'), 'active' => request()->routeIs('news.*')],
+        ['label' => 'Reports', 'url' => route('annual-report.index'), 'active' => request()->routeIs('annual-report.index')],
         ['label' => 'Contact', 'url' => url('/contact'), 'active' => request()->is('contact')],
     ];
+    $locale = session('locale', app()->getLocale());
 @endphp
 
 <header class="site-header">
@@ -42,7 +46,12 @@
                             {{ $item['label'] }}
                         </a>
                     @endforeach
-                     <a href="{{ route('donate.form') }}" class="site-btn">Donate Now</a>
+                    <span class="site-lang-toggle" aria-label="Language switcher">
+                        <a href="{{ route('language.switch', 'en') }}" class="{{ $locale === 'en' ? 'is-active' : '' }}">EN</a>
+                        <a href="{{ route('language.switch', 'bn') }}" class="{{ $locale === 'bn' ? 'is-active' : '' }}">বাংলা</a>
+                    </span>
+                    <a href="{{ route('volunteer.index') }}" class="site-btn-outline">Volunteer</a>
+                    <a href="{{ route('donate.form') }}" class="site-btn">Donate Now</a>
                 </nav>
             </div>
         </div>

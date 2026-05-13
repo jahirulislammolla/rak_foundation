@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,10 +52,14 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        // Share global settings
-        View::share('settings', Cache::rememberForever('GlobalSettings', function () {
-            return Setting::pluck('value', 'key');
-        }));
+        // Share global settings without blocking artisan diagnostics when the DB is unavailable.
+        try {
+            View::share('settings', Cache::rememberForever('GlobalSettings', function () {
+                return Setting::pluck('value', 'key');
+            }));
+        } catch (Throwable $exception) {
+            View::share('settings', collect());
+        }
 
     }
 }

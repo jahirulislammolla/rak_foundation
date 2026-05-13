@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --rak-navy: #1a3c5e;
+        --rak-navy-light: #2d5a8e;
+        --rak-gold: #c8a84b;
+        --rak-teal: #0f6e56;
+        --rak-crimson: #8b2c2c;
+        --rak-cream: #f5f2eb;
+        --rak-dark: #2c2c2c;
+        --rak-muted: #6b7280;
+        --rak-card: #ffffff;
+    }
+}
+
+@layer components {
+    .rak-container {
+        @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .rak-card {
+        @apply rounded-lg border border-slate-200 bg-white shadow-sm;
+    }
+
+    .rak-section {
+        @apply py-16 sm:py-20;
+    }
+}

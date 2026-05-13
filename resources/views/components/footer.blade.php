@@ -45,6 +45,9 @@
                         <a href="{{ route('works.index') }}">Our Work</a>
                         <a href="{{ url('/events') }}">Events</a>
                         <a href="{{ route('members.index') }}">Members</a>
+                        <a href="{{ route('impact.index') }}">Impact Dashboard</a>
+                        <a href="{{ route('news.index') }}">News & Updates</a>
+                        <a href="{{ route('annual-report.index') }}">Annual Reports</a>
                     </div>
                 </div>
 
@@ -56,6 +59,14 @@
                         <a href="tel:{{ $settings['contact_telephone'] ?? '' }}">{{ $settings['contact_telephone'] ?? 'Phone not set' }}</a>
                         <a href="{{ url('/contact') }}">Send a message</a>
                         <a href="{{ route('donate.form') }}">Support a cause</a>
+                    </div>
+                    <div class="footer-cta">
+                        <strong>Ready to help?</strong>
+                        <p class="mb-3">Donate, volunteer, or introduce a community need.</p>
+                        <div class="site-actions">
+                            <a href="{{ route('donate.form') }}" class="site-btn">Donate</a>
+                            <a href="{{ route('volunteer.index') }}" class="site-btn-outline">Volunteer</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicDonateController;
 use App\Http\Controllers\PublicMembershipController;
 use App\Models\Committee;
+use App\Models\Donation;
+use App\Models\DonationCause;
 use App\Models\Event;
 use App\Models\FocusArea;
 use App\Models\Gallery;
@@ -103,6 +105,14 @@ Route::post('/member-application', [PublicMembershipController::class, 'store'])
 Route::get('/members', [PublicMembershipController::class, 'index'])->name('members.index'); // approved list
 
 Route::post('/messages', [MessageController::class, 'store'])->name('message.store');
+
+Route::get('/language/{locale}', function (string $locale) {
+    abort_unless(in_array($locale, ['en', 'bn'], true), 404);
+
+    session(['locale' => $locale]);
+
+    return back();
+})->name('language.switch');
 
 Route::get('/dashboard', function () {
     $menus = Cache::rememberForever('AdminPanelMenus', function () {
@@ -219,6 +229,55 @@ Route::get('/our-work', function (Request $request) {
 // Public
 Route::get('/donate', [PublicDonateController::class, 'showForm'])->name('donate.form');
 Route::post('/donate', [PublicDonateController::class, 'store'])->name('donate.store');
+
+Route::get('/impact', function () {
+    $stats = Cache::remember('public_impact_stats', now()->addHours(6), function () {
+        return [
+            'total_donations' => Donation::query()->sum('amount'),
+            'active_causes' => DonationCause::query()->count(),
+            'active_members' => Member::approved()->count(),
+            'upcoming_events' => Event::published()->upcoming()->count(),
+        ];
+    });
+
+    $causes = DonationCause::query()->latest()->take(6)->get();
+
+    return view('impact', compact('stats', 'causes'));
+})->name('impact.index');
+
+Route::get('/volunteer', function () {
+    $events = Event::published()
+        ->upcoming()
+        ->orderBy('start_at')
+        ->take(3)
+        ->get();
+
+    return view('volunteer', compact('events'));
+})->name('volunteer.index');
+
+Route::get('/news', function () {
+    $updates = Work::query()
+        ->with('category:id,name')
+        ->where('is_active', 1)
+        ->orderByDesc('published_at')
+        ->paginate(9);
+
+    return view('news', compact('updates'));
+})->name('news.index');
+
+Route::get('/news/{slug}', function (string $slug) {
+    $work = Work::query()
+        ->with('category:id,name')
+        ->where('is_active', 1)
+        ->where('slug', $slug)
+        ->firstOrFail();
+
+    return view('news_show', compact('work'));
+})->name('news.show');
+
+Route::get('/annual-report', function () {
+    return view('annual_report');
+})->name('annual-report.index');
 
 Route::get('/event-registration', [PublicEventRegistrationController::class, 'index']);
 
